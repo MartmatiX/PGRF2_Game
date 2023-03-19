@@ -19,14 +19,12 @@ public class MainGameLoop {
                 -0.5f, 0.5f, 0f,
                 -0.5f, -0.5f, 0f,
                 0.5f, -0.5f, 0f,
-                0.5f, -0.5f, 0f,
-                0.5f, 0.5f, 0f,
-                -0.5f, 0.5f, 0f
+                0.5f, 0.5f, 0f
         };
 
         int[] indices = {
                 0, 1, 3,
-                3, 1, 2
+                3, 1, 2, 1
         };
 
         RawModel model = loader.loadToVAO(vertices, indices);
