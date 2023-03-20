@@ -7,7 +7,7 @@ public class Camera {
 
     private final float CAMERA_SPEED = -0.05f;
 
-    private final Vector3f position = new Vector3f(100, 10f, 0);
+    private final Vector3f position = new Vector3f(100, 0.5f, 0);
     private float pitch;
     private float yaw = 180;
     private float roll;
