@@ -5,6 +5,7 @@ import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.RawModel;
 import renderEngine.Renderer;
+import shaders.StaticShader;
 
 public class MainGameLoop {
 
@@ -15,6 +16,8 @@ public class MainGameLoop {
         Loader loader = new Loader();
         Renderer renderer = new Renderer();
 
+        StaticShader shader = new StaticShader();
+
         float[] vertices = {
                 -0.5f, 0.5f, 0f,
                 -0.5f, -0.5f, 0f,
@@ -24,7 +27,7 @@ public class MainGameLoop {
 
         int[] indices = {
                 0, 1, 3,
-                3, 1, 2, 1
+                3, 1, 2, 0
         };
 
         RawModel model = loader.loadToVAO(vertices, indices);
@@ -32,10 +35,13 @@ public class MainGameLoop {
         // game logic etc...
         while (!Display.isCloseRequested()) { // Checks whether the display is closed by user
             renderer.prepare();
+            shader.start();
             renderer.render(model);
+            shader.stop();
             DisplayManager.updateDisplay();
         }
 
+        shader.cleanUp();
         loader.cleanUp();
         DisplayManager.closeDisplay();
 
