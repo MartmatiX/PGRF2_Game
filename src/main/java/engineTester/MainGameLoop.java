@@ -9,6 +9,7 @@ import org.lwjgl.util.vector.Vector3f;
 import renderEngine.*;
 import models.RawModel;
 import shaders.StaticShader;
+import terrains.Terrain;
 import textures.ModelTexture;
 
 import java.util.ArrayList;
@@ -34,21 +35,23 @@ public class MainGameLoop {
         texture1.setShineDamper(10);
         texture1.setReflectivity(1);
 
-        Entity entity = new Entity(textureModel, new Vector3f(0, 0, -25), 0, 0, 0, 1);
-        Entity dragon = new Entity(dragonTexture, new Vector3f(-7, -5, -20), 0, 50, 0, 0.5f);
+        Entity entity = new Entity(textureModel, new Vector3f(0, 0, 40), 0, 0, 0, 1);
+        Entity dragon = new Entity(dragonTexture, new Vector3f(0, 1, 30), 0, 50, 0, 0.3f);
 
-        List<Entity> entitiesToRender = new ArrayList<>();
-        entitiesToRender.addAll(List.of(entity, dragon));
+        List<Entity> entitiesToRender = new ArrayList<>(List.of(entity, dragon));
 
         Light light = new Light(new Vector3f(0, 0, -20), new Vector3f(1, 1, 1));
-
         Camera camera = new Camera();
+
+        Terrain terrain = new Terrain(0, 0, loader, new ModelTexture(loader.loadTexture("texture")));
+        List<Terrain> terrains = new ArrayList<>(List.of(terrain));
 
         MasterRenderer renderer = new MasterRenderer();
 
         // game logic etc...
         while (!Display.isCloseRequested()) { // Checks whether the display is closed by user
             camera.move();
+            terrains.forEach(renderer::processTerrain);
             entitiesToRender.forEach(renderer::processEntity);
             renderer.render(light, camera);
             DisplayManager.updateDisplay();
