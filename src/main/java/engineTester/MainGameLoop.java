@@ -8,7 +8,6 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.*;
 import models.RawModel;
-import shaders.StaticShader;
 import terrains.Terrain;
 import textures.ModelTexture;
 
@@ -38,6 +37,11 @@ public class MainGameLoop {
         Entity entity = new Entity(textureModel, new Vector3f(0, 0, 40), 0, 0, 0, 1);
         Entity dragon = new Entity(dragonTexture, new Vector3f(0, 1, 30), 0, 50, 0, 0.3f);
 
+        // tree
+        RawModel treeModel = OBJLoader.loadObjModel("tree", loader);
+        ModelTexture treeTexture = new ModelTexture(loader.loadTexture("tree"));
+        TextureModel treeT = new TextureModel(treeModel, treeTexture);
+
         List<Entity> entitiesToRender = new ArrayList<>(List.of(entity, dragon));
 
         Light light = new Light(new Vector3f(0, 0, -20), new Vector3f(1, 1, 1));
@@ -48,11 +52,20 @@ public class MainGameLoop {
 
         MasterRenderer renderer = new MasterRenderer();
 
+        List<Entity> forest = new ArrayList<>();
+        for (int i = 0; i < 10000; i++){
+            double random = (Math.random() * 800) + 1;
+            double random2 = (Math.random() * 800) + 1;
+            Entity entity1 = new Entity(treeT, new Vector3f((float) random, 0, (float) random2), 0, 0, 0, 1);
+            forest.add(entity1);
+        }
+
         // game logic etc...
         while (!Display.isCloseRequested()) { // Checks whether the display is closed by user
             camera.move();
             terrains.forEach(renderer::processTerrain);
             entitiesToRender.forEach(renderer::processEntity);
+            forest.forEach(renderer::processEntity);
             renderer.render(light, camera);
             DisplayManager.updateDisplay();
         }
