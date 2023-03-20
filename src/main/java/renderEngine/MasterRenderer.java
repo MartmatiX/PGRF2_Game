@@ -24,21 +24,29 @@ public class MasterRenderer {
 
     private Matrix4f projectionMatrix;
 
-    private StaticShader shader = new StaticShader();
-    private EntityRenderer entityRenderer;
+    private final StaticShader shader = new StaticShader();
+    private final EntityRenderer entityRenderer;
 
-    private TerrainRenderer terrainRenderer;
-    private TerrainShader terrainShader = new TerrainShader();
+    private final TerrainRenderer terrainRenderer;
+    private final TerrainShader terrainShader = new TerrainShader();
 
-    private Map<TextureModel, List<Entity>> entities = new HashMap<>();
-    private List<Terrain> terrains = new ArrayList<>();
+    private final Map<TextureModel, List<Entity>> entities = new HashMap<>();
+    private final List<Terrain> terrains = new ArrayList<>();
 
     public MasterRenderer() {
-        GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glCullFace(GL11.GL_BACK);
+        enableCulling();
         createProjectionMatrix();
         entityRenderer = new EntityRenderer(shader, projectionMatrix);
         terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
+    }
+
+    public static void enableCulling(){
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glCullFace(GL11.GL_BACK);
+    }
+
+    public static void disableCulling(){
+        GL11.glDisable(GL11.GL_CULL_FACE);
     }
 
     public void render(Light sun, Camera camera) {

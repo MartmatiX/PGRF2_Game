@@ -37,21 +37,21 @@ public class MainGameLoop {
         Entity entity = new Entity(textureModel, new Vector3f(0, 0, 40), 0, 0, 0, 1);
         Entity dragon = new Entity(dragonTexture, new Vector3f(0, 1, 30), 0, 50, 0, 0.3f);
 
-        // tree
-        RawModel treeModel = OBJLoader.loadObjModel("tree", loader);
-        ModelTexture treeTexture = new ModelTexture(loader.loadTexture("tree"));
-        TextureModel treeT = new TextureModel(treeModel, treeTexture);
 
         List<Entity> entitiesToRender = new ArrayList<>(List.of(entity, dragon));
 
-        Light light = new Light(new Vector3f(0, 0, -20), new Vector3f(1, 1, 1));
+        Light light = new Light(new Vector3f(100, 50, 0), new Vector3f(1, 1, 1));
         Camera camera = new Camera();
 
-        Terrain terrain = new Terrain(0, 0, loader, new ModelTexture(loader.loadTexture("texture")));
+        Terrain terrain = new Terrain(0, 0, loader, new ModelTexture(loader.loadTexture("grass")));
         List<Terrain> terrains = new ArrayList<>(List.of(terrain));
 
         MasterRenderer renderer = new MasterRenderer();
 
+        // tree
+        RawModel treeModel = OBJLoader.loadObjModel("tree", loader);
+        ModelTexture treeTexture = new ModelTexture(loader.loadTexture("tree"));
+        TextureModel treeT = new TextureModel(treeModel, treeTexture);
         List<Entity> forest = new ArrayList<>();
         for (int i = 0; i < 10000; i++){
             double random = (Math.random() * 800) + 1;
@@ -60,12 +60,27 @@ public class MainGameLoop {
             forest.add(entity1);
         }
 
+        // fern
+        RawModel fernModel = OBJLoader.loadObjModel("fern", loader);
+        ModelTexture fernTexture = new ModelTexture(loader.loadTexture("fern"));
+        TextureModel finishedFern = new TextureModel(fernModel, fernTexture);
+        finishedFern.getTexture().setHasTransparency(true);
+        finishedFern.getTexture().setUseFakeLighting(true);
+        List<Entity> ferns = new ArrayList<>();
+        for (int i = 0; i < 10000; i++) {
+            double random = (Math.random() * 400) + 1;
+            double random2 = (Math.random() * 400) + 1;
+            Entity entity1 = new Entity(finishedFern, new Vector3f((float) random, 0, (float) random2), 0, 0, 0, 0.1f);
+            ferns.add(entity1);
+        }
+
         // game logic etc...
         while (!Display.isCloseRequested()) { // Checks whether the display is closed by user
             camera.move();
             terrains.forEach(renderer::processTerrain);
             entitiesToRender.forEach(renderer::processEntity);
             forest.forEach(renderer::processEntity);
+            ferns.forEach(renderer::processEntity);
             renderer.render(light, camera);
             DisplayManager.updateDisplay();
         }

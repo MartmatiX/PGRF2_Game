@@ -1,8 +1,6 @@
 package renderEngine;
 
-import entities.Entity;
 import models.RawModel;
-import models.TextureModel;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
@@ -18,7 +16,7 @@ import java.util.List;
 
 public class TerrainRenderer {
 
-    private TerrainShader shader;
+    private final TerrainShader shader;
 
     public TerrainRenderer(TerrainShader shader, Matrix4f projectionMatrix) {
         this.shader = shader;
