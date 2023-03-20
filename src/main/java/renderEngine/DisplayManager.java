@@ -9,12 +9,10 @@ public class DisplayManager {
     private static final int HEIGHT = 720;
     private static final int FPS_CAP = 60;
 
-    public static void createDisplay(){
+    public static void createDisplay() {
 
         // Attributes for display
-        ContextAttribs attribs = new ContextAttribs(3, 2);
-        attribs.withForwardCompatible(true);
-        attribs.withProfileCore(true);
+        ContextAttribs attribs = new ContextAttribs(3, 2).withForwardCompatible(true).withProfileCore(true);
 
         // Display parameters
         try {
