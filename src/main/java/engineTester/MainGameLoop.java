@@ -32,6 +32,9 @@ public class MainGameLoop {
         // dragon model
         RawModel dragonModel = OBJLoader.loadObjModel("dragon", loader);
         TextureModel dragonTexture = new TextureModel(dragonModel, new ModelTexture(loader.loadTexture("texture")));
+        ModelTexture texture1 = dragonTexture.getTexture();
+        texture1.setShineDamper(10);
+        texture1.setReflectivity(1);
 
         Entity entity = new Entity(textureModel, new Vector3f(0, 0, -25), 0, 0, 0, 1);
         Entity dragon = new Entity(dragonTexture, new Vector3f(-7, -5, -20), 0, 50, 0, 0.5f);
@@ -43,6 +46,7 @@ public class MainGameLoop {
         // game logic etc...
         while (!Display.isCloseRequested()) { // Checks whether the display is closed by user
             entity.increaseRotation(0, 1, 0);
+            dragon.increaseRotation(0, 1, 0);
             camera.move();
             renderer.prepare();
             shader.start();
