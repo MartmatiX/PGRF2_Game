@@ -16,10 +16,12 @@ import textures.TerrainTexturePack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MainGameLoop {
 
     public static void main(String[] args) {
+        Random random = new Random();
 
         DisplayManager.createDisplay();
 
@@ -64,9 +66,10 @@ public class MainGameLoop {
         TextureModel treeT = new TextureModel(treeModel, treeTexture);
         List<Entity> forest = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
-            double random = (Math.random() * 800) + 1;
-            double random2 = (Math.random() * 800) + 1;
-            Entity entity1 = new Entity(treeT, new Vector3f((float) random, 0, (float) random2), 0, 0, 0, 3);
+            float x = random.nextFloat() * 800;
+            float z = random.nextFloat() * 800;
+            float y = terrain.getHeightOfTerrain(x, z);
+            Entity entity1 = new Entity(treeT, new Vector3f(x, y, z), 0, 0, 0, 5);
             forest.add(entity1);
         }
 
@@ -77,24 +80,25 @@ public class MainGameLoop {
         finishedFern.getTexture().setHasTransparency(true);
         finishedFern.getTexture().setUseFakeLighting(true);
         List<Entity> ferns = new ArrayList<>();
-        for (int i = 0; i < 10000; i++) {
-            double random = (Math.random() * 400) + 1;
-            double random2 = (Math.random() * 400) + 1;
-            Entity entity1 = new Entity(finishedFern, new Vector3f((float) random, 0, (float) random2), 0, 0, 0, 0.1f);
+        for (int i = 0; i < 1000; i++) {
+            float x = random.nextFloat() * 800;
+            float z = random.nextFloat() * 800;
+            float y = terrain.getHeightOfTerrain(x, z);
+            Entity entity1 = new Entity(finishedFern, new Vector3f(x, y, z), 0, 0, 0, 0.5f);
             ferns.add(entity1);
         }
 
         RawModel playerRawModel = OBJLoader.loadObjModel("person", loader);
         TextureModel playerTexture = new TextureModel(playerRawModel, new ModelTexture(loader.loadTexture("playerTexture")));
-        Player player = new Player(playerTexture, new Vector3f(100, 0, 0), 0, 0, 0, 0.2f);
+        Player player = new Player(playerTexture, new Vector3f(100, 0, 0), 0, 0, 0, 0.3f);
 
         Camera camera = new Camera(player);
 
         // game logic etc...
         while (!Display.isCloseRequested()) { // Checks whether the display is closed by user
+            player.move(terrain);
             camera.move();
 
-            player.move();
             renderer.processEntity(player);
 
             terrains.forEach(renderer::processTerrain);
