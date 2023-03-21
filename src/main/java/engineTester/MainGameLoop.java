@@ -52,7 +52,6 @@ public class MainGameLoop {
         List<Entity> entitiesToRender = new ArrayList<>(List.of(entity, dragon));
 
         Light light = new Light(new Vector3f(100, 50, 0), new Vector3f(1, 1, 1));
-        Camera camera = new Camera();
 
         Terrain terrain = new Terrain(0, 0, loader, texturePack, blendMap);
         List<Terrain> terrains = new ArrayList<>(List.of(terrain));
@@ -88,6 +87,8 @@ public class MainGameLoop {
         RawModel playerRawModel = OBJLoader.loadObjModel("person", loader);
         TextureModel playerTexture = new TextureModel(playerRawModel, new ModelTexture(loader.loadTexture("playerTexture")));
         Player player = new Player(playerTexture, new Vector3f(100, 0, 0), 0, 0, 0, 0.2f);
+
+        Camera camera = new Camera(player);
 
         // game logic etc...
         while (!Display.isCloseRequested()) { // Checks whether the display is closed by user
