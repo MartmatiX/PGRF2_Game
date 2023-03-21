@@ -3,6 +3,7 @@ package engineTester;
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
+import entities.Player;
 import models.TextureModel;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
@@ -37,6 +38,8 @@ public class MainGameLoop {
         RawModel model = OBJLoader.loadObjModel("stall", loader);
         ModelTexture texture = new ModelTexture(loader.loadTexture("stallTexture"));
         TextureModel textureModel = new TextureModel(model, texture);
+        Entity entity = new Entity(textureModel, new Vector3f(0, 0, 40), 0, 0, 0, 1);
+
 
         // dragon model
         RawModel dragonModel = OBJLoader.loadObjModel("dragon", loader);
@@ -44,10 +47,7 @@ public class MainGameLoop {
         ModelTexture texture1 = dragonTexture.getTexture();
         texture1.setShineDamper(10);
         texture1.setReflectivity(1);
-
-        Entity entity = new Entity(textureModel, new Vector3f(0, 0, 40), 0, 0, 0, 1);
         Entity dragon = new Entity(dragonTexture, new Vector3f(0, 1, 30), 0, 50, 0, 0.3f);
-
 
         List<Entity> entitiesToRender = new ArrayList<>(List.of(entity, dragon));
 
@@ -64,10 +64,10 @@ public class MainGameLoop {
         ModelTexture treeTexture = new ModelTexture(loader.loadTexture("tree"));
         TextureModel treeT = new TextureModel(treeModel, treeTexture);
         List<Entity> forest = new ArrayList<>();
-        for (int i = 0; i < 10000; i++){
+        for (int i = 0; i < 1000; i++) {
             double random = (Math.random() * 800) + 1;
             double random2 = (Math.random() * 800) + 1;
-            Entity entity1 = new Entity(treeT, new Vector3f((float) random, 0, (float) random2), 0, 0, 0, 1);
+            Entity entity1 = new Entity(treeT, new Vector3f((float) random, 0, (float) random2), 0, 0, 0, 3);
             forest.add(entity1);
         }
 
@@ -85,9 +85,17 @@ public class MainGameLoop {
             ferns.add(entity1);
         }
 
+        RawModel playerRawModel = OBJLoader.loadObjModel("person", loader);
+        TextureModel playerTexture = new TextureModel(playerRawModel, new ModelTexture(loader.loadTexture("playerTexture")));
+        Player player = new Player(playerTexture, new Vector3f(100, 0, 0), 0, 0, 0, 0.2f);
+
         // game logic etc...
         while (!Display.isCloseRequested()) { // Checks whether the display is closed by user
             camera.move();
+
+            player.move();
+            renderer.processEntity(player);
+
             terrains.forEach(renderer::processTerrain);
             entitiesToRender.forEach(renderer::processEntity);
             forest.forEach(renderer::processEntity);
