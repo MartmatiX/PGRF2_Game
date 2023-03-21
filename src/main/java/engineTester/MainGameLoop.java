@@ -66,8 +66,8 @@ public class MainGameLoop {
         TextureModel treeT = new TextureModel(treeModel, treeTexture);
         List<Entity> forest = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
-            float x = random.nextFloat() * 800;
-            float z = random.nextFloat() * 800;
+            float x = (random.nextFloat() * 800) + 5;
+            float z = (random.nextFloat() * 800) + 5;
             float y = terrain.getHeightOfTerrain(x, z);
             Entity entity1 = new Entity(treeT, new Vector3f(x, y, z), 0, 0, 0, 5);
             forest.add(entity1);
@@ -75,16 +75,17 @@ public class MainGameLoop {
 
         // fern
         RawModel fernModel = OBJLoader.loadObjModel("fern", loader);
-        ModelTexture fernTexture = new ModelTexture(loader.loadTexture("fern"));
+        ModelTexture fernTexture = new ModelTexture(loader.loadTexture("fernAtlas"));
+        fernTexture.setNumberOfRows(2);
         TextureModel finishedFern = new TextureModel(fernModel, fernTexture);
         finishedFern.getTexture().setHasTransparency(true);
         finishedFern.getTexture().setUseFakeLighting(true);
         List<Entity> ferns = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
-            float x = random.nextFloat() * 800;
-            float z = random.nextFloat() * 800;
+            float x = (random.nextFloat() * 800) + 5;
+            float z = (random.nextFloat() * 800) + 5;
             float y = terrain.getHeightOfTerrain(x, z);
-            Entity entity1 = new Entity(finishedFern, new Vector3f(x, y, z), 0, 0, 0, 0.5f);
+            Entity entity1 = new Entity(finishedFern, random.nextInt(4), new Vector3f(x, y, z), 0, 0, 0, 0.5f);
             ferns.add(entity1);
         }
 

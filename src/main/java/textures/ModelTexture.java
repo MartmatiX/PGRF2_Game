@@ -9,6 +9,8 @@ public class ModelTexture {
     private boolean hasTransparency = false;
     private boolean useFakeLighting = false;
 
+    private int numberOfRows = 1;
+
     public float getShineDamper() {
         return shineDamper;
     }
@@ -47,5 +49,13 @@ public class ModelTexture {
 
     public void setUseFakeLighting(boolean useFakeLighting) {
         this.useFakeLighting = useFakeLighting;
+    }
+
+    public int getNumberOfRows() {
+        return numberOfRows;
+    }
+
+    public void setNumberOfRows(int numberOfRows) {
+        this.numberOfRows = numberOfRows;
     }
 }
