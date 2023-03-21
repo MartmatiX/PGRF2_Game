@@ -10,6 +10,8 @@ import renderEngine.*;
 import models.RawModel;
 import terrains.Terrain;
 import textures.ModelTexture;
+import textures.TerrainTexture;
+import textures.TerrainTexturePack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,15 @@ public class MainGameLoop {
         DisplayManager.createDisplay();
 
         Loader loader = new Loader();
+
+        // Texture Pack
+        TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("grass"));
+        TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("mud"));
+        TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("grassFlowers"));
+        TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("path"));
+
+        TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, bTexture, gTexture);
+        TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
 
         // stall model
         RawModel model = OBJLoader.loadObjModel("stall", loader);
@@ -43,7 +54,7 @@ public class MainGameLoop {
         Light light = new Light(new Vector3f(100, 50, 0), new Vector3f(1, 1, 1));
         Camera camera = new Camera();
 
-        Terrain terrain = new Terrain(0, 0, loader, new ModelTexture(loader.loadTexture("grass")));
+        Terrain terrain = new Terrain(0, 0, loader, texturePack, blendMap);
         List<Terrain> terrains = new ArrayList<>(List.of(terrain));
 
         MasterRenderer renderer = new MasterRenderer();
