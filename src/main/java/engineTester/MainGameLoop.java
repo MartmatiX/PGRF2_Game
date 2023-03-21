@@ -53,7 +53,7 @@ public class MainGameLoop {
 
         Light light = new Light(new Vector3f(100, 50, 0), new Vector3f(1, 1, 1));
 
-        Terrain terrain = new Terrain(0, 0, loader, texturePack, blendMap);
+        Terrain terrain = new Terrain(0, 0, loader, texturePack, blendMap, "heightmap");
         List<Terrain> terrains = new ArrayList<>(List.of(terrain));
 
         MasterRenderer renderer = new MasterRenderer();
