@@ -26,31 +26,25 @@ public class Camera {
 
     public void move() {
         calculateZoom();
-        calculatePitch();
-        calculateAngleAroundPlayer();
+        calculateCameraAngle();
         float horizontalDistance = calculateHorizontalDistance();
         float verticalDistance = calculateVerticalDistance();
         calculateCameraPosition(horizontalDistance, verticalDistance);
         this.yaw = 180 - (player.getRotY() + angleAroundPlayer);
     }
 
-    private void calculateZoom() {
-        float zoomLevel = Mouse.getDWheel() * 0.1f;
-        distanceFromPlayer -= zoomLevel;
-    }
-
-    private void calculatePitch() {
-        if (Mouse.isButtonDown(1)) {
+    private void calculateCameraAngle() {
+        if (Mouse.isButtonDown(0)) {
+            float angleChange = Mouse.getDX() * 0.3f;
+            angleAroundPlayer -= angleChange;
             float pitchChange = Mouse.getDY() * 0.1f;
             pitch -= pitchChange;
         }
     }
 
-    private void calculateAngleAroundPlayer() {
-        if (Mouse.isButtonDown(0)) {
-            float angleChange = Mouse.getDX() * 0.3f;
-            angleAroundPlayer -= angleChange;
-        }
+    private void calculateZoom() {
+        float zoomLevel = Mouse.getDWheel() * 0.1f;
+        distanceFromPlayer -= zoomLevel;
     }
 
     private float calculateHorizontalDistance() {
