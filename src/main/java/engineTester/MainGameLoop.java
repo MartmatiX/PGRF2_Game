@@ -56,23 +56,27 @@ public class MainGameLoop {
 
         List<Entity> entitiesToRender = new ArrayList<>(List.of(entity, dragon));
 
-        Light sun = new Light(new Vector3f(0, 1000, -7000), new Vector3f(0.4f, 0.4f, 0.4f));
-        Light light1 = new Light(new Vector3f(185, 4.7f, 300), new Vector3f(1, 0, 0), new Vector3f(1, 0.01f, 0.0002f));
-        Light light2 = new Light(new Vector3f(370, 4.2f, 200), new Vector3f(0, 1, 0), new Vector3f(1, 0.01f, 0.002f));
-        Light light3 = new Light(new Vector3f(293, -6.8f, 100), new Vector3f(0, 0, 1), new Vector3f(1, 0.01f, 0.002f));
-        List<Light> lights = new ArrayList<>(List.of(sun, light1, light2, light3));
+        Terrain terrain = new Terrain(0, 0, loader, texturePack, blendMap, "heightmap");
+        List<Terrain> terrains = new ArrayList<>(List.of(terrain));
+
+        List<Light> lights = new ArrayList<>();
+        List<Entity> lamps = new ArrayList<>();
 
         // lamps
         RawModel lampModel = OBJLoader.loadObjModel("lamp", loader);
         ModelTexture lampTexture = new ModelTexture(loader.loadTexture("lamp"));
         TextureModel lamp = new TextureModel(lampModel, lampTexture);
-        Entity lamp1 = new Entity(lamp, new Vector3f(185, -4.7f, 300), 0, 0, 0, 1);
-        Entity lamp2 = new Entity(lamp, new Vector3f(370, 4.2f, 200), 0, 0, 0, 1);
-        Entity lamp3 = new Entity(lamp, new Vector3f(293, -6.8f, 100), 0, 0, 0, 1);
-        List<Entity> lamps = new ArrayList<>(List.of(lamp1, lamp2, lamp3));
-
-        Terrain terrain = new Terrain(0, 0, loader, texturePack, blendMap, "heightmap");
-        List<Terrain> terrains = new ArrayList<>(List.of(terrain));
+        Light sun = new Light(new Vector3f(0, 1000, -7000), new Vector3f(0.1f, 0.1f, 0.1f));
+        for (int i = 0; i < 15; i++) {
+            float x = (random.nextFloat() * 800) + 5;
+            float z = (random.nextFloat() * 800) + 5;
+            float y = terrain.getHeightOfTerrain(x, z);
+            Light light = new Light(new Vector3f(x, y + 4, z), new Vector3f(1, 0, 0), new Vector3f(1, 0.01f, 0.002f));
+            Entity lampE = new Entity(lamp, new Vector3f(x, y, z), 0, 0, 0, 1);
+            lamps.add(lampE);
+            lights.add(light);
+        }
+        lights.add(sun);
 
         MasterRenderer renderer = new MasterRenderer();
 
