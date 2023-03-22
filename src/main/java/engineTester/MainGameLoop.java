@@ -62,7 +62,7 @@ public class MainGameLoop {
         List<Light> lights = new ArrayList<>();
         List<Entity> lamps = new ArrayList<>();
 
-        // lamps
+        // lamps and light
         RawModel lampModel = OBJLoader.loadObjModel("lamp", loader);
         ModelTexture lampTexture = new ModelTexture(loader.loadTexture("lamp"));
         TextureModel lamp = new TextureModel(lampModel, lampTexture);
@@ -71,14 +71,14 @@ public class MainGameLoop {
             float x = (random.nextFloat() * 800) + 5;
             float z = (random.nextFloat() * 800) + 5;
             float y = terrain.getHeightOfTerrain(x, z);
-            Light light = new Light(new Vector3f(x, y + 4, z), new Vector3f(1, 0, 0), new Vector3f(1, 0.01f, 0.002f));
+            Light light = new Light(new Vector3f(x, y + 5, z), new Vector3f(1f, 0.5f, 0.5f), new Vector3f(1, 0.008f, 0.0004f));
             Entity lampE = new Entity(lamp, new Vector3f(x, y, z), 0, 0, 0, 1);
             lamps.add(lampE);
             lights.add(light);
         }
         lights.add(sun);
 
-        MasterRenderer renderer = new MasterRenderer();
+        MasterRenderer renderer = new MasterRenderer(loader);
 
         // tree
         RawModel treeModel = OBJLoader.loadObjModel("tree", loader);
@@ -120,6 +120,7 @@ public class MainGameLoop {
             ferns.add(entity1);
         }
 
+        // player
         RawModel playerRawModel = OBJLoader.loadObjModel("untitled", loader);
         TextureModel playerTexture = new TextureModel(playerRawModel, new ModelTexture(loader.loadTexture("player_neon")));
         Player player = new Player(playerTexture, new Vector3f(100, 0, 0), 0, 0, 0, 1f);
