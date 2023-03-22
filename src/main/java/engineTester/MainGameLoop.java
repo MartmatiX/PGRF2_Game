@@ -57,6 +57,8 @@ public class MainGameLoop {
         List<Entity> entitiesToRender = new ArrayList<>(List.of(entity, dragon));
 
         Light light = new Light(new Vector3f(400, 400, 400), new Vector3f(1, 1, 1));
+        Light light1 = new Light(new Vector3f(400, 1, 400), new Vector3f(1, 0, 0));
+        List<Light> lights = new ArrayList<>(List.of(light, light1));
 
         Terrain terrain = new Terrain(0, 0, loader, texturePack, blendMap, "heightmap");
         List<Terrain> terrains = new ArrayList<>(List.of(terrain));
@@ -103,9 +105,9 @@ public class MainGameLoop {
             ferns.add(entity1);
         }
 
-        RawModel playerRawModel = OBJLoader.loadObjModel("person", loader);
-        TextureModel playerTexture = new TextureModel(playerRawModel, new ModelTexture(loader.loadTexture("playerTexture")));
-        Player player = new Player(playerTexture, new Vector3f(100, 0, 0), 0, 0, 0, 0.3f);
+        RawModel playerRawModel = OBJLoader.loadObjModel("untitled", loader);
+        TextureModel playerTexture = new TextureModel(playerRawModel, new ModelTexture(loader.loadTexture("player_neon")));
+        Player player = new Player(playerTexture, new Vector3f(100, 0, 0), 0, 0, 0, 1f);
 
         Camera camera = new Camera(player);
 
@@ -126,7 +128,7 @@ public class MainGameLoop {
             entitiesToRender.forEach(renderer::processEntity);
             forest.forEach(renderer::processEntity);
             ferns.forEach(renderer::processEntity);
-            renderer.render(light, camera);
+            renderer.render(lights, camera);
             guiRenderer.render(guis);
             DisplayManager.updateDisplay();
         }
