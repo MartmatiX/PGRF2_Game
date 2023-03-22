@@ -4,8 +4,11 @@ import entities.Camera;
 import entities.Entity;
 import entities.Light;
 import entities.Player;
+import guis.GuiRenderer;
+import guis.GuiTexture;
 import models.TextureModel;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.*;
 import models.RawModel;
@@ -53,7 +56,7 @@ public class MainGameLoop {
 
         List<Entity> entitiesToRender = new ArrayList<>(List.of(entity, dragon));
 
-        Light light = new Light(new Vector3f(100, 50, 0), new Vector3f(1, 1, 1));
+        Light light = new Light(new Vector3f(400, 400, 400), new Vector3f(1, 1, 1));
 
         Terrain terrain = new Terrain(0, 0, loader, texturePack, blendMap, "heightmap");
         List<Terrain> terrains = new ArrayList<>(List.of(terrain));
@@ -70,6 +73,17 @@ public class MainGameLoop {
             float z = (random.nextFloat() * 800) + 5;
             float y = terrain.getHeightOfTerrain(x, z);
             Entity entity1 = new Entity(treeT, new Vector3f(x, y, z), 0, 0, 0, 5);
+            forest.add(entity1);
+        }
+
+        RawModel pineModel = OBJLoader.loadObjModel("pine", loader);
+        ModelTexture pineTexture = new ModelTexture(loader.loadTexture("pine"));
+        TextureModel pine = new TextureModel(pineModel, pineTexture);
+        for (int i = 0; i < 1000; i++) {
+            float x = (random.nextFloat() * 800) + 5;
+            float z = (random.nextFloat() * 800) + 5;
+            float y = terrain.getHeightOfTerrain(x, z);
+            Entity entity1 = new Entity(pine, new Vector3f(x, y, z), 0, 0, 0, 1);
             forest.add(entity1);
         }
 
@@ -95,6 +109,12 @@ public class MainGameLoop {
 
         Camera camera = new Camera(player);
 
+        List<GuiTexture> guis = new ArrayList<>();
+        GuiTexture gui = new GuiTexture(loader.loadTexture("health"), new Vector2f(-0.75f, 0.75f), new Vector2f(0.25f, 0.25f));
+        guis.add(gui);
+
+        GuiRenderer guiRenderer = new GuiRenderer(loader);
+
         // game logic etc...
         while (!Display.isCloseRequested()) { // Checks whether the display is closed by user
             player.move(terrain);
@@ -107,9 +127,11 @@ public class MainGameLoop {
             forest.forEach(renderer::processEntity);
             ferns.forEach(renderer::processEntity);
             renderer.render(light, camera);
+            guiRenderer.render(guis);
             DisplayManager.updateDisplay();
         }
 
+        guiRenderer.cleanUp();
         renderer.cleanUp();
         loader.cleanUp();
         DisplayManager.closeDisplay();
