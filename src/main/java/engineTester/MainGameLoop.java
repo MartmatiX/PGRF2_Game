@@ -7,6 +7,7 @@ import entities.Player;
 import guis.GuiRenderer;
 import guis.GuiTexture;
 import models.TextureModel;
+import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
@@ -30,7 +31,7 @@ import java.util.Random;
 
 public class MainGameLoop {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws LWJGLException {
         Random random = new Random();
 
         DisplayManager.createDisplay();
@@ -63,7 +64,7 @@ public class MainGameLoop {
 
         List<Entity> entitiesToRender = new ArrayList<>(List.of(entity, dragon));
 
-        Terrain terrain = new Terrain(0, 0, loader, texturePack, blendMap, "heightmap");
+        Terrain terrain = new Terrain(0, 0, loader, texturePack, blendMap, "test");
         List<Terrain> terrains = new ArrayList<>(List.of(terrain));
 
         List<Light> lights = new ArrayList<>();
@@ -72,10 +73,10 @@ public class MainGameLoop {
         RawModel lampModel = OBJLoader.loadObjModel("lamp", loader);
         ModelTexture lampTexture = new ModelTexture(loader.loadTexture("lamp"));
         TextureModel lamp = new TextureModel(lampModel, lampTexture);
-        Light sun = new Light(new Vector3f(0, 1000, -7000), new Vector3f(1, 1, 1));
+        Light sun = new Light(new Vector3f(800, 2000, 0), new Vector3f(0.7f, 0.7f, 0.7f));
         for (int i = 0; i < 15; i++) {
-            float x = (random.nextFloat() * 800) + 5;
-            float z = (random.nextFloat() * 800) + 5;
+            float x = (random.nextFloat() * 1600) + 5;
+            float z = (random.nextFloat() * 1600) + 5;
             float y = terrain.getHeightOfTerrain(x, z);
             Light light = new Light(new Vector3f(x, y + 5, z), new Vector3f(1f, 0.5f, 0.5f), new Vector3f(1, 0.008f, 0.0004f));
             Entity lampE = new Entity(lamp, new Vector3f(x, y, z), 0, 0, 0, 1);
@@ -91,8 +92,8 @@ public class MainGameLoop {
         ModelTexture treeTexture = new ModelTexture(loader.loadTexture("tree"));
         TextureModel treeT = new TextureModel(treeModel, treeTexture);
         for (int i = 0; i < 1000; i++) {
-            float x = (random.nextFloat() * 800) + 5;
-            float z = (random.nextFloat() * 800) + 5;
+            float x = (random.nextFloat() * 1600) + 5;
+            float z = (random.nextFloat() * 1600) + 5;
             float y = terrain.getHeightOfTerrain(x, z);
             Entity entity1 = new Entity(treeT, new Vector3f(x, y, z), 0, 0, 0, 5);
             entitiesToRender.add(entity1);
@@ -102,8 +103,8 @@ public class MainGameLoop {
         ModelTexture pineTexture = new ModelTexture(loader.loadTexture("pine"));
         TextureModel pine = new TextureModel(pineModel, pineTexture);
         for (int i = 0; i < 1000; i++) {
-            float x = (random.nextFloat() * 800) + 5;
-            float z = (random.nextFloat() * 800) + 5;
+            float x = (random.nextFloat() * 1600) + 5;
+            float z = (random.nextFloat() * 1600) + 5;
             float y = terrain.getHeightOfTerrain(x, z);
             Entity entity1 = new Entity(pine, new Vector3f(x, y, z), 0, 0, 0, 1);
             entitiesToRender.add(entity1);
@@ -117,8 +118,8 @@ public class MainGameLoop {
         finishedFern.getTexture().setHasTransparency(true);
         finishedFern.getTexture().setUseFakeLighting(true);
         for (int i = 0; i < 1000; i++) {
-            float x = (random.nextFloat() * 800) + 5;
-            float z = (random.nextFloat() * 800) + 5;
+            float x = (random.nextFloat() * 1600) + 5;
+            float z = (random.nextFloat() * 1600) + 5;
             float y = terrain.getHeightOfTerrain(x, z);
             Entity entity1 = new Entity(finishedFern, random.nextInt(4), new Vector3f(x, y, z), 0, 0, 0, 0.5f);
             entitiesToRender.add(entity1);
@@ -144,8 +145,17 @@ public class MainGameLoop {
         WaterShader waterShader = new WaterShader();
         WaterRenderer waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), buffers);
         List<WaterTile> waters = new ArrayList<>();
-        WaterTile water = new WaterTile(75, 600, terrain.getHeightOfTerrain(75, 1000));
-        waters.add(water);
+        WaterTile water = new WaterTile(75, 600, terrain.getHeightOfTerrain(75, 600) + 1);
+        WaterTile water2 = new WaterTile(195, 600, terrain.getHeightOfTerrain(75, 600) + 1);
+        WaterTile water3 = new WaterTile(315, 600, terrain.getHeightOfTerrain(75, 600) + 1);
+        WaterTile water4 = new WaterTile(435, 600, terrain.getHeightOfTerrain(75, 600) + 1);
+        WaterTile water5 = new WaterTile(950, 820, 10);
+        WaterTile water6 = new WaterTile(1070, 820, 10);
+        WaterTile water7 = new WaterTile(950, 940, 10);
+        WaterTile water8 = new WaterTile(1070, 940, 10);
+        waters.addAll(List.of(water, water2, water3, water5, water6, water7, water8));
+
+        boolean sunMoveWest = true;
 
         // game logic etc...
         while (!Display.isCloseRequested()) { // Checks whether the display is closed by user
@@ -162,6 +172,19 @@ public class MainGameLoop {
             renderer.renderScene(entitiesToRender, terrains, lights, camera, new Vector4f(0, 1, 0, -water.getHeight() + 1f));
             camera.getPosition().y += distance;
             camera.invertPitch();
+
+            // TODO: 23.03.2023 dodelat pohyb slunce po y ose pro lepsi simulaci dne / noci
+            if (sunMoveWest) {
+                sun.getPosition().z += 800 * DisplayManager.getFrameTimeSeconds();
+                if (sun.getPosition().z >= 3000){
+                    sunMoveWest = false;
+                }
+            } else {
+                sun.getPosition().z -= 800 * DisplayManager.getFrameTimeSeconds();
+                if (sun.getPosition().z <= -3000){
+                    sunMoveWest = true;
+                }
+            }
 
             // refraction texture
             buffers.bindRefractionFrameBuffer();

@@ -22,7 +22,7 @@ public class MasterRenderer {
 
     private static final float FOV = 70;
     private static final float NEAR_PLANE = 0.1f;
-    private static final float FAR_PLANE = 1000;
+    private static final float FAR_PLANE = 100000; // develop note: change back to like 1000
 
     private static final float RED = 0.5444f;
     private static final float GREEN = 0.62f;
@@ -82,7 +82,7 @@ public class MasterRenderer {
         terrainRenderer.render(terrains);
         terrainShader.stop();
 
-        skyboxRenderer.render(camera, RED, GREEN, BLUE);
+        // skyboxRenderer.render(camera, RED, GREEN, BLUE); // develop note: enable skybox again
 
         terrains.clear();
         entities.clear();
