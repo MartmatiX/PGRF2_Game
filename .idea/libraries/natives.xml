@@ -3,7 +3,7 @@
     <CLASSES />
     <JAVADOC />
     <NATIVE>
-      <root url="file://$PROJECT_DIR$/../LWJGL/natives" />
+      <root url="file://$PROJECT_DIR$/src/LWJGL/natives" />
     </NATIVE>
     <SOURCES />
   </library>
