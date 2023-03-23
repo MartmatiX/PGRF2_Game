@@ -8,6 +8,7 @@ import guis.GuiRenderer;
 import guis.GuiTexture;
 import models.TextureModel;
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
@@ -173,7 +174,7 @@ public class MainGameLoop {
             camera.getPosition().y += distance;
             camera.invertPitch();
 
-            // TODO: 23.03.2023 dodelat pohyb slunce po y ose pro lepsi simulaci dne / noci
+            // TODO: 23.03.2023 finish sun movement around the Y axis to simulate day / night better
             if (sunMoveWest) {
                 sun.getPosition().z += 800 * DisplayManager.getFrameTimeSeconds();
                 if (sun.getPosition().z >= 3000){
@@ -184,6 +185,10 @@ public class MainGameLoop {
                 if (sun.getPosition().z <= -3000){
                     sunMoveWest = true;
                 }
+            }
+
+            if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
+                System.exit(0);
             }
 
             // refraction texture

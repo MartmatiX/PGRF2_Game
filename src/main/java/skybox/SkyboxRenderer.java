@@ -60,7 +60,7 @@ public class SkyboxRenderer {
         shader.stop();
     }
 
-    // TODO: 22.03.2023 dodelat zmenu max a min svitivosti podle denni doby
+    // TODO: 22.03.2023 change max / min lighting depending on the day cycle (might be doable via sun brightness in MainGameLoop)
 
     private void bindTextures() {
         time += DisplayManager.getFrameTimeSeconds() * 1000;
