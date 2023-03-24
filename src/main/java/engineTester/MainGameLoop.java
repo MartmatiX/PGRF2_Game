@@ -1,5 +1,6 @@
 package engineTester;
 
+import collision.CollisionDetection;
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
@@ -38,6 +39,8 @@ public class MainGameLoop {
         DisplayManager.createDisplay();
 
         Loader loader = new Loader();
+
+        List<Entity> objectsToCollide = new ArrayList<>();
 
         // Texture Pack
         TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("grass"));
@@ -109,6 +112,7 @@ public class MainGameLoop {
             float y = terrain.getHeightOfTerrain(x, z);
             Entity entity1 = new Entity(pine, new Vector3f(x, y, z), 0, 0, 0, 1);
             entitiesToRender.add(entity1);
+            objectsToCollide.add(entity1);
         }
 
         // fern
@@ -174,20 +178,26 @@ public class MainGameLoop {
             camera.getPosition().y += distance;
             camera.invertPitch();
 
+            for (Entity entity1 : objectsToCollide) {
+                if (CollisionDetection.detectCollision(player, entity1)) {
+                    System.out.println("collision");
+                }
+            }
+
             // TODO: 23.03.2023 finish sun movement around the Y axis to simulate day / night better
             if (sunMoveWest) {
                 sun.getPosition().z += 800 * DisplayManager.getFrameTimeSeconds();
-                if (sun.getPosition().z >= 3000){
+                if (sun.getPosition().z >= 3000) {
                     sunMoveWest = false;
                 }
             } else {
                 sun.getPosition().z -= 800 * DisplayManager.getFrameTimeSeconds();
-                if (sun.getPosition().z <= -3000){
+                if (sun.getPosition().z <= -3000) {
                     sunMoveWest = true;
                 }
             }
 
-            if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
+            if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
                 System.exit(0);
             }
 
