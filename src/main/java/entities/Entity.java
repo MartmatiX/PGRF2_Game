@@ -54,6 +54,10 @@ public class Entity {
         this.rotZ += dz;
     }
 
+    public void moveToPosition(Vector3f targetPosition) {
+        this.position = targetPosition;
+    }
+
     public TextureModel getModel() {
         return model;
     }

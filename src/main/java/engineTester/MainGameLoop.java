@@ -33,6 +33,8 @@ import java.util.Random;
 
 public class MainGameLoop {
 
+    private static final int MAX_RENDER_DISTANCE = 4096;
+
     public static void main(String[] args) throws LWJGLException {
         Random random = new Random();
 
@@ -79,10 +81,10 @@ public class MainGameLoop {
         TextureModel lamp = new TextureModel(lampModel, lampTexture);
         Light sun = new Light(new Vector3f(800, 2000, 0), new Vector3f(0.7f, 0.7f, 0.7f));
         for (int i = 0; i < 15; i++) {
-            float x = (random.nextFloat() * 1600) + 5;
-            float z = (random.nextFloat() * 1600) + 5;
+            float x = random.nextFloat(MAX_RENDER_DISTANCE) + 5;
+            float z = random.nextFloat(MAX_RENDER_DISTANCE) + 5;
             float y = terrain.getHeightOfTerrain(x, z);
-            Light light = new Light(new Vector3f(x, y + 5, z), new Vector3f(1f, 0.5f, 0.5f), new Vector3f(1, 0.008f, 0.0004f));
+            Light light = new Light(new Vector3f(x, y + 10, z), new Vector3f(1f, 0.5f, 0.5f), new Vector3f(1, 0.1f, 0.004f));
             Entity lampE = new Entity(lamp, new Vector3f(x, y, z), 0, 0, 0, 1);
             entitiesToRender.add(lampE);
             lights.add(light);
@@ -96,8 +98,8 @@ public class MainGameLoop {
         ModelTexture treeTexture = new ModelTexture(loader.loadTexture("tree"));
         TextureModel treeT = new TextureModel(treeModel, treeTexture);
         for (int i = 0; i < 1000; i++) {
-            float x = (random.nextFloat() * 1600) + 5;
-            float z = (random.nextFloat() * 1600) + 5;
+            float x = random.nextFloat(MAX_RENDER_DISTANCE) + 5;
+            float z = random.nextFloat(MAX_RENDER_DISTANCE) + 5;
             float y = terrain.getHeightOfTerrain(x, z);
             Entity entity1 = new Entity(treeT, new Vector3f(x, y, z), 0, 0, 0, 5);
             entitiesToRender.add(entity1);
@@ -107,8 +109,8 @@ public class MainGameLoop {
         ModelTexture pineTexture = new ModelTexture(loader.loadTexture("pine"));
         TextureModel pine = new TextureModel(pineModel, pineTexture);
         for (int i = 0; i < 1000; i++) {
-            float x = (random.nextFloat() * 1600) + 5;
-            float z = (random.nextFloat() * 1600) + 5;
+            float x = random.nextFloat(MAX_RENDER_DISTANCE) + 5;
+            float z = random.nextFloat(MAX_RENDER_DISTANCE) + 5;
             float y = terrain.getHeightOfTerrain(x, z);
             Entity entity1 = new Entity(pine, new Vector3f(x, y, z), 0, 0, 0, 1);
             entitiesToRender.add(entity1);
@@ -123,8 +125,8 @@ public class MainGameLoop {
         finishedFern.getTexture().setHasTransparency(true);
         finishedFern.getTexture().setUseFakeLighting(true);
         for (int i = 0; i < 1000; i++) {
-            float x = (random.nextFloat() * 1600) + 5;
-            float z = (random.nextFloat() * 1600) + 5;
+            float x = random.nextFloat(MAX_RENDER_DISTANCE) + 5;
+            float z = random.nextFloat(MAX_RENDER_DISTANCE) + 5;
             float y = terrain.getHeightOfTerrain(x, z);
             Entity entity1 = new Entity(finishedFern, random.nextInt(4), new Vector3f(x, y, z), 0, 0, 0, 0.5f);
             entitiesToRender.add(entity1);
@@ -150,17 +152,31 @@ public class MainGameLoop {
         WaterShader waterShader = new WaterShader();
         WaterRenderer waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), buffers);
         List<WaterTile> waters = new ArrayList<>();
-        WaterTile water = new WaterTile(75, 600, terrain.getHeightOfTerrain(75, 600) + 1);
-        WaterTile water2 = new WaterTile(195, 600, terrain.getHeightOfTerrain(75, 600) + 1);
-        WaterTile water3 = new WaterTile(315, 600, terrain.getHeightOfTerrain(75, 600) + 1);
-        WaterTile water4 = new WaterTile(435, 600, terrain.getHeightOfTerrain(75, 600) + 1);
-        WaterTile water5 = new WaterTile(950, 820, 10);
-        WaterTile water6 = new WaterTile(1070, 820, 10);
-        WaterTile water7 = new WaterTile(950, 940, 10);
-        WaterTile water8 = new WaterTile(1070, 940, 10);
-        waters.addAll(List.of(water, water2, water3, water5, water6, water7, water8));
+        WaterTile water = new WaterTile(0, 0, 1);
+//        WaterTile water2 = new WaterTile(195, 600, terrain.getHeightOfTerrain(75, 600) + 1);
+//        WaterTile water3 = new WaterTile(315, 600, terrain.getHeightOfTerrain(75, 600) + 1);
+//        WaterTile water4 = new WaterTile(435, 600, terrain.getHeightOfTerrain(75, 600) + 1);
+//        WaterTile water5 = new WaterTile(950, 820, 10);
+//        WaterTile water6 = new WaterTile(1070, 820, 10);
+//        WaterTile water7 = new WaterTile(950, 940, 10);
+//        WaterTile water8 = new WaterTile(1070, 940, 10);
+        waters.addAll(List.of(water));
 
         boolean sunMoveWest = true;
+
+        boolean isDamageable = true;
+        int timeBeforeNextHit = 1000;
+
+        int enemyX = random.nextInt(MAX_RENDER_DISTANCE);
+        int enemyZ = random.nextInt(MAX_RENDER_DISTANCE);
+        boolean enemyMoving = false;
+
+        List<Entity> enemies = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            Entity enemy = new Entity(pine, new Vector3f(random.nextInt(MAX_RENDER_DISTANCE), terrain.getHeightOfTerrain(100, 800), random.nextInt(MAX_RENDER_DISTANCE)), 0, 0, 0, 5f);
+            enemies.add(enemy);
+        }
 
         // game logic etc...
         while (!Display.isCloseRequested()) { // Checks whether the display is closed by user
@@ -174,16 +190,29 @@ public class MainGameLoop {
             float distance = 2 * (camera.getPosition().y - water.getHeight());
             camera.getPosition().y -= distance;
             camera.invertPitch();
-            renderer.renderScene(entitiesToRender, terrains, lights, camera, new Vector4f(0, 1, 0, -water.getHeight() + 1f));
+            renderer.renderScene(entitiesToRender, enemies, terrains, lights, camera, new Vector4f(0, 1, 0, -water.getHeight() + 1f));
             camera.getPosition().y += distance;
             camera.invertPitch();
 
-            for (Entity entity1 : objectsToCollide) {
+            // TODO: 24.03.2023 remake this to method or something
+            for (Entity entity1 : enemies) {
                 if (CollisionDetection.detectCollision(player, entity1)) {
-                    System.out.println("collision");
+                    if (isDamageable) {
+                        player.setHealth(player.getHealth() - 10);
+                        System.out.println(player.getHealth());
+                        isDamageable = false;
+                    }
+                }
+            }
+            if (!isDamageable) {
+                timeBeforeNextHit -= 100 * DisplayManager.getFrameTimeSeconds();
+                if (timeBeforeNextHit <= 0) {
+                    isDamageable = true;
+                    timeBeforeNextHit = 1000;
                 }
             }
 
+            // TODO: 24.03.2023 remake this to method or something
             // TODO: 23.03.2023 finish sun movement around the Y axis to simulate day / night better
             if (sunMoveWest) {
                 sun.getPosition().z += 800 * DisplayManager.getFrameTimeSeconds();
@@ -203,11 +232,35 @@ public class MainGameLoop {
 
             // refraction texture
             buffers.bindRefractionFrameBuffer();
-            renderer.renderScene(entitiesToRender, terrains, lights, camera, new Vector4f(0, -1, 0, water.getHeight() + 1f));
+            renderer.renderScene(entitiesToRender, enemies, terrains, lights, camera, new Vector4f(0, -1, 0, water.getHeight() + 1f));
             buffers.unbindCurrentFrameBuffer();
 
             GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
-            renderer.renderScene(entitiesToRender, terrains, lights, camera, new Vector4f(0, 1, 0, 15));
+            renderer.renderScene(entitiesToRender, enemies, terrains, lights, camera, new Vector4f(0, 1, 0, 15));
+
+            // TODO: 24.03.2023 recreate this to method or something, also add better movement
+            // enemy movement
+            for (Entity enemy : enemies) {
+                if (!enemyMoving) {
+                    enemyX = random.nextInt(1600);
+                    enemyZ = random.nextInt(1600);
+                    enemyMoving = true;
+                } else {
+                    // Move enemy towards destination
+                    float dx = enemyX - enemy.getPosition().x;
+                    float dz = enemyZ - enemy.getPosition().z;
+                    float distance2 = (float) Math.sqrt(dx * dx + dz * dz);
+
+                    if (distance2 < 10f) {
+                        enemyMoving = false;
+                    } else {
+                        dx /= distance2;
+                        dz /= distance2;
+                        enemy.increasePosition(dx * DisplayManager.getFrameTimeSeconds() * 50, 0, dz * DisplayManager.getFrameTimeSeconds() * 50);
+                        enemy.moveToPosition(new Vector3f(enemy.getPosition().x, terrain.getHeightOfTerrain(enemy.getPosition().x, enemy.getPosition().z), enemy.getPosition().z));
+                    }
+                }
+            }
 
             waterRenderer.render(waters, camera, sun);
 

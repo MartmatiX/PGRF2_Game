@@ -20,6 +20,8 @@ public class Player extends Entity {
 
     private boolean isInAir = false;
 
+    private int health = 100;
+
     public Player(TextureModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
         super(model, position, rotX, rotY, rotZ, scale);
     }
@@ -61,4 +63,13 @@ public class Player extends Entity {
 
         if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) jump();
     }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
 }
