@@ -83,7 +83,7 @@ public class MasterRenderer {
         terrainRenderer.render(terrains);
         terrainShader.stop();
 
-        // skyboxRenderer.render(camera, RED, GREEN, BLUE); // develop note: enable skybox again
+        skyboxRenderer.render(camera, RED, GREEN, BLUE); // develop note: enable skybox again
 
         terrains.clear();
         entities.clear();

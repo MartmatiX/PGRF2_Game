@@ -34,7 +34,7 @@ import java.util.Random;
 
 public class MainGameLoop {
 
-    private static final int MAX_RENDER_DISTANCE = 4096;
+    private static final int MAX_RENDER_DISTANCE = 2048;
 
     public static void main(String[] args) throws LWJGLException {
         HeightMapGenerator.generateHeightMap();
@@ -155,14 +155,7 @@ public class MainGameLoop {
         WaterShader waterShader = new WaterShader();
         WaterRenderer waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), buffers);
         List<WaterTile> waters = new ArrayList<>();
-        WaterTile water = new WaterTile(2048, 2048, terrain.getHeightOfTerrain(0, 0) + 1f);
-//        WaterTile water2 = new WaterTile(195, 600, terrain.getHeightOfTerrain(75, 600) + 1);
-//        WaterTile water3 = new WaterTile(315, 600, terrain.getHeightOfTerrain(75, 600) + 1);
-//        WaterTile water4 = new WaterTile(435, 600, terrain.getHeightOfTerrain(75, 600) + 1);
-//        WaterTile water5 = new WaterTile(950, 820, 10);
-//        WaterTile water6 = new WaterTile(1070, 820, 10);
-//        WaterTile water7 = new WaterTile(950, 940, 10);
-//        WaterTile water8 = new WaterTile(1070, 940, 10);
+        WaterTile water = new WaterTile((float) 1024, (float) 1024, terrain.getHeightOfTerrain(0, 0) + 1f);
         waters.addAll(List.of(water));
 
         boolean sunMoveWest = true;
