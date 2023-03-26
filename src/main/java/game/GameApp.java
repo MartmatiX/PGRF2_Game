@@ -8,6 +8,7 @@ import game.utils.*;
 import heightmap.HeightMapGenerator;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.openal.AL;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
@@ -59,6 +60,8 @@ public class GameApp {
         boolean enemyMoving = false;
 
         float time = 0;
+
+        SoundManager.playSurroundSound("src/main/resources/sounds/metin_surround.wav");
 
         // game logic etc...
         while (!Display.isCloseRequested()) {
@@ -154,6 +157,7 @@ public class GameApp {
 //        guiRenderer.cleanUp();
         renderer.cleanUp();
         loader.cleanUp();
+        AL.destroy();
         DisplayManager.closeDisplay();
     }
 
