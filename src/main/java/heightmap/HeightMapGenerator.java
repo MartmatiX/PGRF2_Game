@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 public class HeightMapGenerator {
     public static void generateHeightMap() {
         Random random = new Random();
-        double seed = random.nextDouble(0.003);
+        double seed = random.nextDouble(0.0035);
 //        double seed = 0.003;
         int width = 2048;
         int height = 2048;

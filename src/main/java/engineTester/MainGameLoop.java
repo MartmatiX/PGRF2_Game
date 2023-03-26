@@ -84,9 +84,14 @@ public class MainGameLoop {
         TextureModel lamp = new TextureModel(lampModel, lampTexture);
         Light sun = new Light(new Vector3f(800, 2000, 0), new Vector3f(0.7f, 0.7f, 0.7f));
         for (int i = 0; i < 15; i++) {
-            float x = random.nextFloat(MAX_RENDER_DISTANCE) + 5;
-            float z = random.nextFloat(MAX_RENDER_DISTANCE) + 5;
+            float x = random.nextFloat(MAX_RENDER_DISTANCE);
+            float z = random.nextFloat(MAX_RENDER_DISTANCE);
             float y = terrain.getHeightOfTerrain(x, z);
+            while (y < -37) {
+                x = random.nextFloat(MAX_RENDER_DISTANCE);
+                z = random.nextFloat(MAX_RENDER_DISTANCE);
+                y = terrain.getHeightOfTerrain(x, z);
+            }
             Light light = new Light(new Vector3f(x, y + 10, z), new Vector3f(1f, 0.5f, 0.5f), new Vector3f(1, 0.1f, 0.004f));
             Entity lampE = new Entity(lamp, new Vector3f(x, y, z), 0, 0, 0, 1);
             entitiesToRender.add(lampE);
@@ -104,8 +109,10 @@ public class MainGameLoop {
             float x = random.nextFloat(MAX_RENDER_DISTANCE);
             float z = random.nextFloat(MAX_RENDER_DISTANCE);
             float y = terrain.getHeightOfTerrain(x, z);
-            Entity entity1 = new Entity(treeT, new Vector3f(x, y, z), 0, 0, 0, 5);
-            entitiesToRender.add(entity1);
+            if (y > -38) {
+                Entity entity1 = new Entity(treeT, new Vector3f(x, y, z), 0, 0, 0, 5);
+                entitiesToRender.add(entity1);
+            }
         }
 
         RawModel pineModel = OBJLoader.loadObjModel("pine", loader);
@@ -115,9 +122,11 @@ public class MainGameLoop {
             float x = random.nextFloat(MAX_RENDER_DISTANCE);
             float z = random.nextFloat(MAX_RENDER_DISTANCE);
             float y = terrain.getHeightOfTerrain(x, z);
-            Entity entity1 = new Entity(pine, new Vector3f(x, y, z), 0, 0, 0, 1);
-            entitiesToRender.add(entity1);
-            objectsToCollide.add(entity1);
+            if (y > -38) {
+                Entity entity1 = new Entity(pine, new Vector3f(x, y, z), 0, 0, 0, 1);
+                entitiesToRender.add(entity1);
+                objectsToCollide.add(entity1);
+            }
         }
 
         // fern
@@ -131,8 +140,10 @@ public class MainGameLoop {
             float x = random.nextFloat(MAX_RENDER_DISTANCE);
             float z = random.nextFloat(MAX_RENDER_DISTANCE);
             float y = terrain.getHeightOfTerrain(x, z);
-            Entity entity1 = new Entity(finishedFern, random.nextInt(4), new Vector3f(x, y, z), 0, 0, 0, 0.5f);
-            entitiesToRender.add(entity1);
+            if (y > -38) {
+                Entity entity1 = new Entity(finishedFern, random.nextInt(4), new Vector3f(x, y, z), 0, 0, 0, 0.5f);
+                entitiesToRender.add(entity1);
+            }
         }
 
         // player
