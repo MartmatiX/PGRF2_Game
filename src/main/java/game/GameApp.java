@@ -17,6 +17,9 @@ import org.lwjgl.util.vector.Vector4f;
 import renderEngine.*;
 import terrains.Terrain;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static game.utils.GlobalVariables.*;
 
 public class GameApp {
@@ -62,6 +65,9 @@ public class GameApp {
         float time = 0;
 
         SoundManager.playSurroundSound("src/main/resources/sounds/metin_surround.wav");
+
+        float x = random.nextFloat(MAX_RENDER_DISTANCE);
+        float y = random.nextFloat(MAX_RENDER_DISTANCE);
 
         // game logic etc...
         while (!Display.isCloseRequested()) {
@@ -127,11 +133,12 @@ public class GameApp {
             // enemy movement
             for (Entity enemy : enemies) {
                 if (!enemyMoving) {
+                    x = random.nextFloat(MAX_RENDER_DISTANCE);
+                    y = random.nextFloat(MAX_RENDER_DISTANCE);
                     enemyMoving = true;
                 } else {
-                    // Move enemy towards player
-                    float dx = player.getPosition().getX() - enemy.getPosition().x;
-                    float dz = player.getPosition().getZ() - enemy.getPosition().z;
+                    float dx = x - enemy.getPosition().x;
+                    float dz = y - enemy.getPosition().z;
                     float distance2 = (float) Math.sqrt(dx * dx + dz * dz);
 
                     if (distance2 < 3f) {
