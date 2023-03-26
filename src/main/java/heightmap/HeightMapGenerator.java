@@ -11,7 +11,6 @@ public class HeightMapGenerator {
     public static void generateHeightMap() {
         Random random = new Random();
         double seed = random.nextDouble(0.0035);
-//        double seed = 0.003;
         int width = 2048;
         int height = 2048;
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);

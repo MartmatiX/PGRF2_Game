@@ -1,10 +1,10 @@
 package terrains;
 
+import game.utils.GlobalVariables;
 import models.RawModel;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.Loader;
-import textures.ModelTexture;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
 import toolbox.Maths;
@@ -18,15 +18,15 @@ public class Terrain {
 
     // TODO: 21.03.2023 create better collision system with terrain
 
-    private static final float SIZE = 2048;
+    private static final float SIZE = GlobalVariables.MAX_RENDER_DISTANCE;
     private static final float MAX_HEIGHT = 40;
     private static final float MAX_PIXEL_COLOR = 256 * 256 * 256;
 
-    private float x;
-    private float z;
-    private RawModel model;
-    private TerrainTexturePack texturePack;
-    private TerrainTexture blendMap;
+    private final float x;
+    private final float z;
+    private final RawModel model;
+    private final TerrainTexturePack texturePack;
+    private final TerrainTexture blendMap;
 
     private float[][] heights;
 
@@ -60,7 +60,7 @@ public class Terrain {
 
     private RawModel generateTerrain(Loader loader, String heightMap) {
 
-        BufferedImage image = null;
+        BufferedImage image;
         try {
             image = ImageIO.read(new File("src/main/resources/" + heightMap + ".png"));
         } catch (IOException e) {

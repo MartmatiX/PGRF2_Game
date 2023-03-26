@@ -1,11 +1,14 @@
 package water;
 
+import game.utils.GlobalVariables;
+
 public class WaterTile {
 	
-	public static final float TILE_SIZE = 1024;
+	public static final float TILE_SIZE = (float) GlobalVariables.MAX_RENDER_DISTANCE / 2;
 	
-	private float height;
-	private float x,z;
+	private final float height;
+	private final float x;
+	private final float z;
 	
 	public WaterTile(float centerX, float centerZ, float height){
 		this.x = centerX;

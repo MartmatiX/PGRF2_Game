@@ -13,7 +13,7 @@ import java.util.List;
 public class OBJLoader {
 
     public static RawModel loadObjModel(String fileName, Loader loader) {
-        FileReader fR = null;
+        FileReader fR;
         try {
             fR = new FileReader("src/main/resources/" + fileName + ".obj");
         } catch (FileNotFoundException e) {
@@ -25,10 +25,10 @@ public class OBJLoader {
         List<Vector2f> textures = new ArrayList<>();
         List<Vector3f> normals = new ArrayList<>();
         List<Integer> indices = new ArrayList<>();
-        float[] verticesArray = null;
+        float[] verticesArray;
         float[] normalsArray = null;
         float[] texturesArray = null;
-        int[] indicesArray = null;
+        int[] indicesArray;
 
         try {
             while (true) {

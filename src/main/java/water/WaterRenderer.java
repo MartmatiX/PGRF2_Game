@@ -24,13 +24,13 @@ public class WaterRenderer {
     private static final float WAVE_SPEED = 0.03f;
 
     private RawModel quad;
-    private WaterShader shader;
-    private WaterFrameBuffers fbos;
+    private final WaterShader shader;
+    private final WaterFrameBuffers fbos;
 
     private float moveFactor = 0;
 
-    private int dudvTexture;
-    private int normalMap;
+    private final int dudvTexture;
+    private final int normalMap;
 
     public WaterRenderer(Loader loader, WaterShader shader, Matrix4f projectionMatrix, WaterFrameBuffers fbos) {
         this.shader = shader;
@@ -86,7 +86,7 @@ public class WaterRenderer {
     }
 
     private void setUpVAO(Loader loader) {
-        // Just x and z vectex positions here, y is set to 0 in v.shader
+        // Just x and z vertex positions here, y is set to 0 in v.shader
         float[] vertices = {-1, -1, -1, 1, 1, -1, 1, -1, -1, 1, 1, 1};
         quad = loader.loadToVao(vertices, 2);
     }
