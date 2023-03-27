@@ -39,4 +39,8 @@ public class GlobalVariables {
 
     public static final Camera camera = new Camera(player);
 
+    public static float time;
+
+    public static boolean isGameRunning = true;
+
 }

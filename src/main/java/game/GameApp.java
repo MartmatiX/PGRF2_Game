@@ -57,14 +57,12 @@ public class GameApp {
         boolean isDamageable = true;
         int timeBeforeNextHit = 1000;
 
-        boolean enemyMoving = false;
-
-        float time = 0;
+        time = 0;
 
         SoundManager.playSurroundSound("src/main/resources/sounds/metin_surround.wav");
 
         // game logic etc...
-        while (!Display.isCloseRequested()) {
+        while (isGameRunning) {
             player.move(terrain);
             camera.move();
 
@@ -119,9 +117,9 @@ public class GameApp {
                 }
             }
 
-            if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+            if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) || Display.isCloseRequested()) {
                 System.out.println(time);
-                System.exit(0);
+                isGameRunning = false;
             }
 
             // TODO: 24.03.2023 recreate this to method or something, also add better movement
@@ -145,14 +143,10 @@ public class GameApp {
                     float dz = player.getPosition().z - enemy.getPosition().z;
                     float distance2 = (float) Math.sqrt(dx * dx + dz * dz);
 
-                    if (distance2 < 3f) {
-                        enemyMoving = false;
-                    } else {
-                        dx /= distance2;
-                        dz /= distance2;
-                        enemy.increasePosition(dx * DisplayManager.getFrameTimeSeconds() * 50, 0, dz * DisplayManager.getFrameTimeSeconds() * 50);
-                        enemy.moveToPosition(new Vector3f(enemy.getPosition().x, terrain.getHeightOfTerrain(enemy.getPosition().x, enemy.getPosition().z), enemy.getPosition().z));
-                    }
+                    dx /= distance2;
+                    dz /= distance2;
+                    enemy.increasePosition(dx * DisplayManager.getFrameTimeSeconds() * 50, 0, dz * DisplayManager.getFrameTimeSeconds() * 50);
+                    enemy.moveToPosition(new Vector3f(enemy.getPosition().x, terrain.getHeightOfTerrain(enemy.getPosition().x, enemy.getPosition().z), enemy.getPosition().z));
                 }
             }
 
@@ -177,6 +171,8 @@ public class GameApp {
         loader.cleanUp();
         AL.destroy();
         DisplayManager.closeDisplay();
+
+        EndgameScreen endgameScreen = new EndgameScreen();
     }
 
 }
