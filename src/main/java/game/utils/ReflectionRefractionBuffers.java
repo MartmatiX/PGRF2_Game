@@ -12,14 +12,14 @@ public class ReflectionRefractionBuffers {
         float distance = 2 * (camera.getPosition().y - waters.get(0).getHeight());
         camera.getPosition().y -= distance;
         camera.invertPitch();
-        renderer.renderScene(entitiesToRender, enemies, terrains, lights, camera, new Vector4f(0, 1, 0, -waters.get(0).getHeight() + 1f));
+        renderer.renderScene(player, entitiesToRender, enemies, terrains, lights, camera, new Vector4f(0, 1, 0, -waters.get(0).getHeight() + 1f));
         camera.getPosition().y += distance;
         camera.invertPitch();
     }
 
     public static void refract () {
         buffers.bindRefractionFrameBuffer();
-        renderer.renderScene(entitiesToRender, enemies, terrains, lights, camera, new Vector4f(0, -1, 0, waters.get(0).getHeight() + 1f));
+        renderer.renderScene(player, entitiesToRender, enemies, terrains, lights, camera, new Vector4f(0, -1, 0, waters.get(0).getHeight() + 1f));
         buffers.unbindCurrentFrameBuffer();
     }
 

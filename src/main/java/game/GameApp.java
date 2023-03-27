@@ -17,9 +17,6 @@ import org.lwjgl.util.vector.Vector4f;
 import renderEngine.*;
 import terrains.Terrain;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static game.utils.GlobalVariables.*;
 
 public class GameApp {
@@ -64,7 +61,7 @@ public class GameApp {
 
         float time = 0;
 
-        SoundManager.playSurroundSound("src/main/resources/sounds/metin_surround.wav");
+        //SoundManager.playSurroundSound("src/main/resources/sounds/metin_surround.wav");
 
         float x = random.nextFloat(MAX_RENDER_DISTANCE);
         float y = random.nextFloat(MAX_RENDER_DISTANCE);
@@ -73,6 +70,8 @@ public class GameApp {
         while (!Display.isCloseRequested()) {
             player.move(terrain);
             camera.move();
+
+            BorderChecker.checkBoundaries();
 
             time += 1 * DisplayManager.getFrameTimeSeconds();
 
@@ -83,7 +82,7 @@ public class GameApp {
 
 
             GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
-            renderer.renderScene(entitiesToRender, enemies, terrains, lights, camera, new Vector4f(0, 1, 0, 15));
+            renderer.renderScene(player, entitiesToRender, enemies, terrains, lights, camera, new Vector4f(0, 1, 0, 15));
 
 
             // random testing bullshitery
@@ -150,6 +149,8 @@ public class GameApp {
                     }
                 }
             }
+
+            renderer.processEntity(player);
 
             waterRenderer.render(waters, camera, sun);
 

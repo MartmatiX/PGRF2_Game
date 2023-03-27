@@ -6,6 +6,9 @@ import org.lwjgl.util.vector.Vector3f;
 import renderEngine.DisplayManager;
 import terrains.Terrain;
 
+import static game.utils.GlobalVariables.MAX_RENDER_DISTANCE;
+import static game.utils.GlobalVariables.player;
+
 public class Player extends Entity {
 
     // develop note: 50 was nice value, too slow for develop

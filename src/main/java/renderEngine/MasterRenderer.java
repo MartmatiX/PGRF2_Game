@@ -3,6 +3,7 @@ package renderEngine;
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
+import entities.Player;
 import models.TextureModel;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
@@ -58,7 +59,8 @@ public class MasterRenderer {
         GL11.glDisable(GL11.GL_CULL_FACE);
     }
 
-    public void renderScene(List<Entity> entities, List<Entity> enemies, List<Terrain> terrains, List<Light> lights, Camera camera, Vector4f clipPlane) {
+    public void renderScene(Player player, List<Entity> entities, List<Entity> enemies, List<Terrain> terrains, List<Light> lights, Camera camera, Vector4f clipPlane) {
+        processEntity(player);
         terrains.forEach(this::processTerrain);
         entities.forEach(this::processEntity);
         enemies.forEach(this::processEntity);
