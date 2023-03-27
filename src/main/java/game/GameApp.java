@@ -126,10 +126,21 @@ public class GameApp {
 
             // TODO: 24.03.2023 recreate this to method or something, also add better movement
             // enemy movement
-            for (Entity enemy : enemies) {
-                if (!enemyMoving) {
-                    enemyMoving = true;
-                } else {
+            for (int i = 0; i < enemies.size(); i++) {
+                Entity enemy = enemies.get(i);
+                boolean canMove = true;
+
+                for (int j = 1; j < enemies.size() - 1; j++) {
+                    if (i == j) continue;
+
+                    Entity otherEnemy = enemies.get(j);
+                    if (CollisionDetection.detectCollision(enemy, otherEnemy)) {
+                        canMove = false;
+                        break;
+                    }
+                }
+
+                if (canMove) {
                     float dx = player.getPosition().x - enemy.getPosition().x;
                     float dz = player.getPosition().z - enemy.getPosition().z;
                     float distance2 = (float) Math.sqrt(dx * dx + dz * dz);
@@ -144,6 +155,7 @@ public class GameApp {
                     }
                 }
             }
+
 
             if (player.getPosition().getY() < -38) {
                 Player.setRunSpeed(100);
