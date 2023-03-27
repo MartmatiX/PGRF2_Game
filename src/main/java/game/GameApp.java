@@ -61,10 +61,7 @@ public class GameApp {
 
         float time = 0;
 
-        //SoundManager.playSurroundSound("src/main/resources/sounds/metin_surround.wav");
-
-        float x = random.nextFloat(MAX_RENDER_DISTANCE);
-        float y = random.nextFloat(MAX_RENDER_DISTANCE);
+        SoundManager.playSurroundSound("src/main/resources/sounds/metin_surround.wav");
 
         // game logic etc...
         while (!Display.isCloseRequested()) {
@@ -131,12 +128,10 @@ public class GameApp {
             // enemy movement
             for (Entity enemy : enemies) {
                 if (!enemyMoving) {
-                    x = random.nextFloat(MAX_RENDER_DISTANCE);
-                    y = random.nextFloat(MAX_RENDER_DISTANCE);
                     enemyMoving = true;
                 } else {
-                    float dx = x - enemy.getPosition().x;
-                    float dz = y - enemy.getPosition().z;
+                    float dx = player.getPosition().x - enemy.getPosition().x;
+                    float dz = player.getPosition().z - enemy.getPosition().z;
                     float distance2 = (float) Math.sqrt(dx * dx + dz * dz);
 
                     if (distance2 < 3f) {
@@ -150,7 +145,11 @@ public class GameApp {
                 }
             }
 
-            renderer.processEntity(player);
+            if (player.getPosition().getY() < -38) {
+                Player.setRunSpeed(100);
+            } else {
+                Player.setRunSpeed(400);
+            }
 
             waterRenderer.render(waters, camera, sun);
 
