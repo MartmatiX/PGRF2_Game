@@ -14,7 +14,7 @@ import static game.utils.GlobalVariables.*;
 public class LightAndSunCreator {
 
     public static void createSun() {
-        Light sun = new Light(new Vector3f(800, 2000, 0), new Vector3f(0.1f, 0.1f, 0.1f));
+        Light sun = new Light(new Vector3f(0, 2000, 0), new Vector3f(0.8f, 0.8f, 0.8f));
         GlobalVariables.lights.add(sun);
     }
 

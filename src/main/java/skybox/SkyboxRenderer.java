@@ -64,26 +64,26 @@ public class SkyboxRenderer {
 
     private void bindTextures() {
         time += DisplayManager.getFrameTimeSeconds() * 1000;
-        time %= 24000;
+        time %= 60000;
         int texture1;
         int texture2;
         float blendFactor;
-        if(time >= 0 && time < 5000){
+        if(time >= 0 && time < 15000){
             texture1 = nightTexture;
             texture2 = nightTexture;
-            blendFactor = (time - 0)/(5000);
-        }else if(time >= 5000 && time < 8000){
+            blendFactor = (time - 0)/(15000.0f);
+        }else if(time >= 15000 && time < 24000){
             texture1 = nightTexture;
             texture2 = texture;
-            blendFactor = (time - 5000)/(8000 - 5000);
-        }else if(time >= 8000 && time < 21000){
+            blendFactor = (time - 15000)/(24000 - 15000);
+        }else if(time >= 24000 && time < 51000){
             texture1 = texture;
             texture2 = texture;
-            blendFactor = (time - 8000)/(21000 - 8000);
+            blendFactor = (time - 24000)/(51000 - 24000);
         }else{
             texture1 = texture;
             texture2 = nightTexture;
-            blendFactor = (time - 21000)/(24000 - 21000);
+            blendFactor = (time - 51000)/(60000 - 51000);
         }
 
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
@@ -92,4 +92,5 @@ public class SkyboxRenderer {
         GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texture2);
         shader.loadBlendFactor(blendFactor);
     }
+
 }

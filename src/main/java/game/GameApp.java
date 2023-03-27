@@ -111,14 +111,13 @@ public class GameApp {
             // TODO: 24.03.2023 remake this to method or something
             // TODO: 23.03.2023 finish sun movement around the Y axis to simulate day / night better
             if (sunMoveWest) {
-                sun.getPosition().z += 800 * DisplayManager.getFrameTimeSeconds();
+                sun.getPosition().z += 200 * DisplayManager.getFrameTimeSeconds();
                 if (sun.getPosition().z >= 3000) {
                     EnemyCreator.createSingleEnemy();
-                    System.out.println(enemies.size());
                     sunMoveWest = false;
                 }
             } else {
-                sun.getPosition().z -= 800 * DisplayManager.getFrameTimeSeconds();
+                sun.getPosition().z -= 200 * DisplayManager.getFrameTimeSeconds();
                 if (sun.getPosition().z <= -3000) {
                     sunMoveWest = true;
                 }
