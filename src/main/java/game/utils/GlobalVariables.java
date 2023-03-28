@@ -1,9 +1,6 @@
 package game.utils;
 
-import entities.Camera;
-import entities.Entity;
-import entities.Light;
-import entities.Player;
+import entities.*;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
@@ -42,5 +39,7 @@ public class GlobalVariables {
     public static float time;
 
     public static boolean isGameRunning = true;
+
+    public static List<Projectile> projectiles = new ArrayList<>();
 
 }

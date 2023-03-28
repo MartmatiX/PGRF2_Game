@@ -1,13 +1,15 @@
 package entities;
 
+import models.RawModel;
 import models.TextureModel;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.DisplayManager;
+import renderEngine.OBJLoader;
 import terrains.Terrain;
+import textures.ModelTexture;
 
-import static game.utils.GlobalVariables.MAX_RENDER_DISTANCE;
-import static game.utils.GlobalVariables.player;
+import static game.utils.GlobalVariables.*;
 
 public class Player extends Entity {
 
@@ -81,5 +83,29 @@ public class Player extends Entity {
 
     public static void setRunSpeed(float runSpeed) {
         RUN_SPEED = runSpeed;
+    }
+
+    public void shootProjectile() {
+        RawModel rawProjectileModel = OBJLoader.loadObjModel("Bullet", loader);
+        ModelTexture projectileModelTexture = new ModelTexture(loader.loadTexture("texture"));
+        TextureModel projectileModel = new TextureModel(rawProjectileModel, projectileModelTexture);
+        Vector3f projectilePosition = new Vector3f(super.getPosition());
+        Vector3f lookDirection = getLookDirection();
+        projectilePosition.x += lookDirection.x * 2;
+        projectilePosition.y += 1.5f;
+        projectilePosition.z += lookDirection.z * 2;
+        float projectileScale = 8f;
+        float projectileSpeed = 20;
+        Projectile projectile = new Projectile(projectileModel, projectilePosition, lookDirection, projectileScale, projectileSpeed);
+        projectiles.add(projectile);
+    }
+
+    public Vector3f getLookDirection() {
+        float pitch = super.getRotX();
+        float yaw = super.getRotY();
+        float x = (float) Math.sin(Math.toRadians(yaw)) * (float) Math.cos(Math.toRadians(pitch));
+        float y = (float) Math.sin(Math.toRadians(pitch));
+        float z = (float) Math.cos(Math.toRadians(yaw)) * (float) Math.cos(Math.toRadians(pitch));
+        return new Vector3f(x, y, z);
     }
 }

@@ -4,6 +4,7 @@ import collision.CollisionDetection;
 import entities.Entity;
 import entities.Light;
 import entities.Player;
+import entities.Projectile;
 import game.utils.*;
 import heightmap.HeightMapGenerator;
 import org.lwjgl.LWJGLException;
@@ -77,7 +78,7 @@ public class GameApp {
 
 
             GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
-            renderer.renderScene(player, entitiesToRender, enemies, terrains, lights, camera, new Vector4f(0, 1, 0, 15));
+            renderer.renderScene(player, entitiesToRender, enemies, projectiles, terrains, lights, camera, new Vector4f(0, 1, 0, 15));
 
 
             // random testing bullshitery
@@ -147,6 +148,33 @@ public class GameApp {
                     dz /= distance2;
                     enemy.increasePosition(dx * DisplayManager.getFrameTimeSeconds() * 50, 0, dz * DisplayManager.getFrameTimeSeconds() * 50);
                     enemy.moveToPosition(new Vector3f(enemy.getPosition().x, terrain.getHeightOfTerrain(enemy.getPosition().x, enemy.getPosition().z), enemy.getPosition().z));
+                }
+            }
+
+            // projectile testing
+            if (Keyboard.isKeyDown(Keyboard.KEY_P)) {
+                player.shootProjectile();
+            }
+
+            for (Projectile projectile : projectiles){
+                projectile.update();
+                if (projectile.getPosition().z > 1000) {
+                    projectile.setPosition(new Vector3f(0, 0, 0));
+                    break;
+                }
+            }
+
+            for (int i = 0; i < enemies.size(); i++) {
+                Entity enemy = enemies.get(i);
+                for (int j = 0; j < projectiles.size(); j++) {
+                    if (j == i) continue;
+
+                    Projectile projectile = projectiles.get(j);
+                    if (CollisionDetection.detectCollision(enemy, projectile)) {
+                        enemies.remove(i);
+                        projectiles.remove(j);
+                        break;
+                    }
                 }
             }
 
