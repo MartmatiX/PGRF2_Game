@@ -60,7 +60,8 @@ public class GameApp {
 
         time = 0;
 
-        SoundManager.playSurroundSound("src/main/resources/sounds/metin_surround.wav");
+        SoundManager.init();
+        SoundManager.playSurroundSound("src/main/resources/sounds/metin_surround.wav", 0.2f);
 
         // game logic etc...
         while (isGameRunning) {
@@ -87,8 +88,8 @@ public class GameApp {
             for (Entity entity1 : enemies) {
                 if (CollisionDetection.detectCollision(player, entity1)) {
                     if (isDamageable) {
+                        SoundManager.playDamageSound("src/main/resources/sounds/dmg_sound.wav");
                         player.setHealth(player.getHealth() - 10);
-                        System.out.println(player.getHealth());
                         isDamageable = false;
                         Player.setRunSpeed(Player.getRunSpeed() * 2);
                     }
@@ -177,7 +178,6 @@ public class GameApp {
                     }
                 }
             }
-
 
             if (player.getPosition().getY() < -38) {
                 Player.setRunSpeed(100);
