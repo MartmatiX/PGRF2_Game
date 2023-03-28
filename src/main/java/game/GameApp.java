@@ -61,7 +61,10 @@ public class GameApp {
         time = 0;
 
         SoundManager.init();
-        SoundManager.playSurroundSound("src/main/resources/sounds/metin_surround.wav", 0.2f);
+        SoundManager.playSurroundSound("src/main/resources/sounds/metin_surround.wav", 0.02f);
+
+        boolean canShoot = true;
+        int timeBeforeNextShot = 100;
 
         // game logic etc...
         while (isGameRunning) {
@@ -92,6 +95,7 @@ public class GameApp {
                         player.setHealth(player.getHealth() - 10);
                         isDamageable = false;
                         Player.setRunSpeed(Player.getRunSpeed() * 2);
+                        if (player.getHealth() == 0) isGameRunning = false;
                     }
                 }
             }
@@ -153,16 +157,21 @@ public class GameApp {
             }
 
             // projectile testing
-            if (Keyboard.isKeyDown(Keyboard.KEY_P)) {
+            if (Keyboard.isKeyDown(Keyboard.KEY_P) && canShoot) {
                 player.shootProjectile();
+                canShoot = false;
             }
 
-            for (Projectile projectile : projectiles){
-                projectile.update();
-                if (projectile.getPosition().z > 1000) {
-                    projectile.setPosition(new Vector3f(0, 0, 0));
-                    break;
+            if (!canShoot) {
+                timeBeforeNextShot -= 1 * DisplayManager.getFrameTimeSeconds();
+                if (timeBeforeNextShot <= 0) {
+                    canShoot = true;
+                    timeBeforeNextShot = 100;
                 }
+            }
+
+            for (int i = 0; i < projectiles.size(); i++) {
+                projectiles.get(i).update();
             }
 
             for (int i = 0; i < enemies.size(); i++) {
@@ -177,6 +186,10 @@ public class GameApp {
                         break;
                     }
                 }
+            }
+
+            for (int i = 0; i < projectiles.size(); i++) {
+                projectiles.get(i).destroy(i);
             }
 
             if (player.getPosition().getY() < -38) {

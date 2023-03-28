@@ -9,6 +9,7 @@ import renderEngine.OBJLoader;
 import terrains.Terrain;
 import textures.ModelTexture;
 
+import static entities.Projectile.projectileModel;
 import static game.utils.GlobalVariables.*;
 
 public class Player extends Entity {
@@ -86,17 +87,12 @@ public class Player extends Entity {
     }
 
     public void shootProjectile() {
-        RawModel rawProjectileModel = OBJLoader.loadObjModel("Bullet", loader);
-        ModelTexture projectileModelTexture = new ModelTexture(loader.loadTexture("texture"));
-        TextureModel projectileModel = new TextureModel(rawProjectileModel, projectileModelTexture);
         Vector3f projectilePosition = new Vector3f(super.getPosition());
         Vector3f lookDirection = getLookDirection();
         projectilePosition.x += lookDirection.x * 2;
-        projectilePosition.y += 1.5f;
+        projectilePosition.y = player.getPosition().getY() + 2;
         projectilePosition.z += lookDirection.z * 2;
-        float projectileScale = 8f;
-        float projectileSpeed = 20;
-        Projectile projectile = new Projectile(projectileModel, projectilePosition, lookDirection, projectileScale, projectileSpeed);
+        Projectile projectile = new Projectile(projectileModel, projectilePosition, lookDirection);
         projectiles.add(projectile);
     }
 
