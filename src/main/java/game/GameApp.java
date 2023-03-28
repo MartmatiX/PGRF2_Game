@@ -66,6 +66,18 @@ public class GameApp {
         boolean canShoot = true;
         int timeBeforeNextShot = 100;
 
+        EndgameScreen endgameScreen = new EndgameScreen();
+
+        Runnable run = EndgameScreen::updateLabels;
+
+        Thread t = new Thread(() ->{
+           while(true) {
+               run.run();
+           }
+        });
+
+        t.start();
+
         // game logic etc...
         while (isGameRunning) {
             player.move(terrain);
@@ -113,7 +125,9 @@ public class GameApp {
             if (sunMoveWest) {
                 sun.getPosition().z += 200 * DisplayManager.getFrameTimeSeconds();
                 if (sun.getPosition().z >= 3000) {
-                    EnemyCreator.createSingleEnemy();
+                    for (int i = 0; i < 3; i++) {
+                        EnemyCreator.createSingleEnemy();
+                    }
                     sunMoveWest = false;
                 }
             } else {
@@ -124,7 +138,6 @@ public class GameApp {
             }
 
             if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) || Display.isCloseRequested()) {
-                System.out.println(time);
                 isGameRunning = false;
             }
 
@@ -157,8 +170,9 @@ public class GameApp {
             }
 
             // projectile testing
-            if (Keyboard.isKeyDown(Keyboard.KEY_P) && canShoot) {
+            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && canShoot) {
                 player.shootProjectile();
+                SoundManager.playShootingSound("src/main/resources/shootSound.wav");
                 canShoot = false;
             }
 
@@ -183,6 +197,8 @@ public class GameApp {
                     if (CollisionDetection.detectCollision(enemy, projectile)) {
                         enemies.remove(i);
                         projectiles.remove(j);
+                        playerKills++;
+                        SoundManager.playHitSound("src/main/resources/bulletHit.wav");
                         break;
                     }
                 }
@@ -213,7 +229,6 @@ public class GameApp {
         AL.destroy();
         DisplayManager.closeDisplay();
 
-        EndgameScreen endgameScreen = new EndgameScreen();
     }
 
 }

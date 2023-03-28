@@ -23,6 +23,7 @@ public class DisplayManager {
             Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
             Display.create(new PixelFormat(), attribs);
             Display.setTitle("PGRF2 Game");
+            Display.setLocation(10, 250);
         } catch (LWJGLException e) {
             throw new RuntimeException(e);
         }

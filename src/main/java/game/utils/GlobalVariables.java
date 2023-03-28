@@ -42,4 +42,6 @@ public class GlobalVariables {
 
     public static List<Projectile> projectiles = new ArrayList<>();
 
+    public static int playerKills = 0;
+
 }
