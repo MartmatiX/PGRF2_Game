@@ -40,8 +40,16 @@ public class GlobalVariables {
 
     public static boolean isGameRunning = true;
 
-    public static List<Projectile> projectiles = new ArrayList<>();
+    public static final List<Projectile> projectiles = new ArrayList<>();
 
     public static int playerKills = 0;
+
+    public static int invulnerabilityTimer = 100;
+    public static boolean isDamageable = true;
+
+    public static boolean canShoot = true;
+    public static int timeBeforeNextShot = 100;
+
+    public static boolean sunMoveWest = true;
 
 }
