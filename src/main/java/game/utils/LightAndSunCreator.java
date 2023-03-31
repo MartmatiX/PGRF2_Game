@@ -14,7 +14,7 @@ import static game.utils.GlobalVariables.*;
 public class LightAndSunCreator {
 
     public static void createSun() {
-        Light sun = new Light(new Vector3f(0, 2000, 0), new Vector3f(0.8f, 0.8f, 0.8f));
+        Light sun = new Light(new Vector3f(0, 2000, 0), sunlight);
         GlobalVariables.lights.add(sun);
     }
 
@@ -34,7 +34,7 @@ public class LightAndSunCreator {
                 z = random.nextFloat(MAX_RENDER_DISTANCE);
                 y = terrain.getHeightOfTerrain(x, z);
             }
-            Light light = new Light(new Vector3f(x, y + 10, z), new Vector3f(1f, 0.5f, 0.5f), new Vector3f(1, 0.1f, 0.004f));
+            Light light = new Light(new Vector3f(x, y + 10, z), new Vector3f(1f, 0.8f, 0.8f), new Vector3f(1, 0.00001f, 0.004f));
             Entity lampEntity = new Entity(lamp, new Vector3f(x, y, z), 0, 0, 0, 1);
             entitiesToRender.add(lampEntity);
             lights.add(light);

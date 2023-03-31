@@ -1,6 +1,7 @@
 package game.utils;
 
 import entities.*;
+import org.lwjgl.util.vector.Vector3f;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
@@ -51,5 +52,8 @@ public class GlobalVariables {
     public static int timeBeforeNextShot = 100;
 
     public static boolean sunMoveWest = true;
+
+    public static Vector3f sunlight = new Vector3f(0.8f, 0.8f, 0.8f);
+    public static boolean isDay = true;
 
 }

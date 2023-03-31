@@ -45,6 +45,18 @@ public class GameApp {
             player.move(terrain);
             camera.move();
 
+            if (isDay) {
+                sunlight.x -= 0.001f;
+                sunlight.y -= 0.001f;
+                sunlight.z -= 0.001f;
+                if (sunlight.z <= 0) isDay = false;
+            } else {
+                sunlight.x += 0.001f;
+                sunlight.y += 0.001f;
+                sunlight.z += 0.001f;
+                if (sunlight.z >= 0.8f) isDay = true;
+            }
+
             BorderChecker.checkBoundaries();
 
             time += 1 * DisplayManager.getFrameTimeSeconds();
