@@ -14,7 +14,6 @@ import static game.utils.GlobalVariables.*;
 
 public class GameLogic {
 
-    // TODO: 28.03.2023 move all game logic functions here once they are finished
     public static void callGameLogic() {
         playerCollisionWithEnemy();
         moveEnemies();
@@ -30,7 +29,7 @@ public class GameLogic {
     private static void playerCollisionWithEnemy() {
         for (Entity enemy : GlobalVariables.enemies) {
             if (CollisionDetection.detectCollision(GlobalVariables.player, enemy) && isDamageable) {
-                SoundManager.playDamageSound("src/main/resources/sounds/dmg_sound.wav");
+                SoundManager.playSound("src/main/resources/sounds/dmg_sound.wav", 1f, false);
                 player.setHealth(player.getHealth() - 10);
                 isDamageable = false;
                 Player.setRunSpeed(Player.getRunSpeed() * 2);
@@ -78,7 +77,7 @@ public class GameLogic {
     private static void checkShooting() {
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && canShoot) {
             player.shootProjectile();
-            SoundManager.playShootingSound("src/main/resources/shootSound.wav");
+            SoundManager.playSound("src/main/resources/shootSound.wav", 1f, false);
             canShoot = false;
         }
         if (!canShoot) {
@@ -101,7 +100,7 @@ public class GameLogic {
                     enemies.remove(i);
                     projectiles.remove(j);
                     playerKills++;
-                    SoundManager.playHitSound("src/main/resources/bulletHit.wav");
+                    SoundManager.playSound("src/main/resources/bulletHit.wav", 1f, false);
                     break;
                 }
             }

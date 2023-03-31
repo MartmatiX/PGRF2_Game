@@ -16,8 +16,6 @@ import java.io.IOException;
 
 public class Terrain {
 
-    // TODO: 21.03.2023 create better collision system with terrain
-
     private static final float SIZE = GlobalVariables.MAX_RENDER_DISTANCE;
     private static final float MAX_HEIGHT = 40;
     private static final float MAX_PIXEL_COLOR = 256 * 256 * 256;

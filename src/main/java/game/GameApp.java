@@ -22,10 +22,6 @@ public class GameApp {
         TexturePackCreator.generateTexture();
         Terrain terrain = terrains.get(0);
 
-        // testing entities
-//        EntityCreator.createStall();
-//        EntityCreator.createDragon();
-
         LightAndSunCreator.createSun();
         LightAndSunCreator.createLamps();
 
@@ -40,19 +36,9 @@ public class GameApp {
         time = 0;
 
         SoundManager.init();
-        SoundManager.playSurroundSound("src/main/resources/sounds/metin_surround.wav", 0.02f);
+        SoundManager.playSound("src/main/resources/sounds/metin_surround.wav", 0.02f, true);
 
-        EndgameScreen endgameScreen = new EndgameScreen();
-
-        Runnable run = EndgameScreen::updateLabels;
-
-        Thread t = new Thread(() -> {
-            while (true) {
-                run.run();
-            }
-        });
-
-        t.start();
+        GameStatusScreen.invokeGameStatusScreen();
 
         // game logic etc...
         while (isGameRunning) {

@@ -1,9 +1,11 @@
 package game.utils;
 
+import renderEngine.DisplayManager;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class EndgameScreen extends JFrame {
+public class GameStatusScreen extends JFrame {
     public static JLabel infoLabel = new JLabel("Game Stats");
     public static JLabel survivedTime = new JLabel();
     public static JLabel playerHealth = new JLabel();
@@ -13,7 +15,7 @@ public class EndgameScreen extends JFrame {
     public static JLabel isVulnerable = new JLabel();
     public static JLabel reloadTime = new JLabel();
 
-    public EndgameScreen() throws HeadlessException {
+    public GameStatusScreen() throws HeadlessException {
         setSize(400, 200);
         super.setTitle("Score");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -51,14 +53,36 @@ public class EndgameScreen extends JFrame {
     }
 
     private static JButton closeButton() {
-        JButton button = new JButton("Exit");
-        button.addActionListener(e -> System.exit(0));
+        JButton button = new JButton("Close game");
+        button.addActionListener(e -> {
+            if (GlobalVariables.isGameRunning) {
+                GlobalVariables.isGameRunning = false;
+                button.setText("Exit program");
+            } else {
+                System.exit(0);
+            }
+        });
         return button;
     }
 
     private static String convertVulnerable() {
         if (GlobalVariables.isDamageable) return "Yes";
         else return "No";
+    }
 
+    public static void invokeGameStatusScreen() {
+        GameStatusScreen gameStatusScreen = new GameStatusScreen();
+        Runnable runnable = GameStatusScreen::updateLabels;
+        Thread thread = new Thread(() -> {
+           while (true) {
+               runnable.run();
+               try {
+                   Thread.sleep((int) DisplayManager.getFrameTimeSeconds());
+               } catch (InterruptedException e) {
+                   throw new RuntimeException(e);
+               }
+           }
+        });
+        thread.start();
     }
 }
