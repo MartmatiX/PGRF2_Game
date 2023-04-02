@@ -1,2 +1,2 @@
 # PGRF2_Game
-Game created as a semestral project on FIM UHK 2023
+Game created as a semestral project on UHK - FIM 2023
