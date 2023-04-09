@@ -36,26 +36,14 @@ public class GameApp {
         time = 0;
 
         SoundManager.init();
-        SoundManager.playSound("src/main/resources/sounds/metin_surround.wav", 0.02f, true);
+        SoundManager.playSound("src/main/resources/sounds/forest.wav", 0.2f, true);
 
         GameStatusScreen.invokeGameStatusScreen();
 
-        // game logic etc...
+
         while (isGameRunning) {
             player.move(terrain);
             camera.move();
-
-            if (isDay) {
-                sunlight.x -= 0.001f;
-                sunlight.y -= 0.001f;
-                sunlight.z -= 0.001f;
-                if (sunlight.z <= 0) isDay = false;
-            } else {
-                sunlight.x += 0.001f;
-                sunlight.y += 0.001f;
-                sunlight.z += 0.001f;
-                if (sunlight.z >= 0.8f) isDay = true;
-            }
 
             BorderChecker.checkBoundaries();
 

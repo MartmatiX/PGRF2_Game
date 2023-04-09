@@ -1,6 +1,7 @@
 package skybox;
 
 import entities.Camera;
+import game.utils.GlobalVariables;
 import models.RawModel;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -9,6 +10,8 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
+
+import static game.utils.GlobalVariables.sunlight;
 
 public class SkyboxRenderer {
 
@@ -60,31 +63,39 @@ public class SkyboxRenderer {
         shader.stop();
     }
 
-    // TODO: 22.03.2023 change max / min lighting depending on the day cycle (might be doable via sun brightness in MainGameLoop)
-
     private void bindTextures() {
         time += DisplayManager.getFrameTimeSeconds() * 1000;
-        time %= 60000;
-        int texture1;
-        int texture2;
-        float blendFactor;
-        if(time >= 0 && time < 15000){
+        time %= 120000;
+        int texture1 = 0;
+        int texture2 = 0;
+        float blendFactor = 0.0f;
+        float sunlightIntensity = 0.0f;
+
+        if (time < 30000) {
             texture1 = nightTexture;
             texture2 = nightTexture;
-            blendFactor = (time - 0)/(15000.0f);
-        }else if(time >= 15000 && time < 24000){
+            blendFactor = time / 30000.0f;
+            sunlightIntensity = time / 30000.0f;
+        } else if (time < 60000) {
             texture1 = nightTexture;
             texture2 = texture;
-            blendFactor = (time - 15000)/(24000 - 15000);
-        }else if(time >= 24000 && time < 51000){
+            blendFactor = (time - 30000.0f) / 30000.0f;
+            sunlightIntensity = 1.0f;
+        } else if (time < 90000) {
             texture1 = texture;
             texture2 = texture;
-            blendFactor = (time - 24000)/(51000 - 24000);
-        }else{
+            blendFactor = (time - 60000.0f) / 30000.0f;
+            sunlightIntensity = 1.0f;
+        } else if (time < 120000) {
             texture1 = texture;
             texture2 = nightTexture;
-            blendFactor = (time - 51000)/(60000 - 51000);
+            blendFactor = (time - 90000.0f) / 30000.0f;
+            sunlightIntensity = (120000.0f - time) / 30000.0f;
         }
+
+        sunlight.x = sunlightIntensity;
+        sunlight.y = sunlightIntensity;
+        sunlight.z = sunlightIntensity;
 
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texture1);

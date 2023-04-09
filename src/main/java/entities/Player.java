@@ -1,21 +1,17 @@
 package entities;
 
-import models.RawModel;
 import models.TextureModel;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.DisplayManager;
-import renderEngine.OBJLoader;
 import terrains.Terrain;
-import textures.ModelTexture;
 
 import static entities.Projectile.projectileModel;
 import static game.utils.GlobalVariables.*;
 
 public class Player extends Entity {
 
-    // develop note: 50 was nice value, too slow for develop
-    private static float RUN_SPEED = 400;
+    private static float RUN_SPEED = 50;
     private static final float TURN_SPEED = 160;
     private static final float GRAVITY = -30;
     private static final float JUMP_POWER = 10;

@@ -8,7 +8,6 @@ import org.lwjgl.util.vector.Vector3f;
 import renderEngine.OBJLoader;
 import textures.ModelTexture;
 
-import static game.utils.GlobalVariables.entitiesToRender;
 import static game.utils.GlobalVariables.loader;
 
 public class EntityCreator {
@@ -32,12 +31,11 @@ public class EntityCreator {
     }
 
     public static Player createPlayer() {
-        RawModel playerRawModel = OBJLoader.loadObjModel("untitled", loader);
-        TextureModel playerTexture = new TextureModel(playerRawModel, new ModelTexture(loader.loadTexture("player_neon")));
-        Player player = new Player(playerTexture, new Vector3f(100, 0, 800), 0, 0, 0, 1f);
+        RawModel playerRawModel = OBJLoader.loadObjModel("player", loader);
+        TextureModel playerTexture = new TextureModel(playerRawModel, new ModelTexture(loader.loadTexture("player")));
 
         //entitiesToRender.add(player);
-        return player;
+        return new Player(playerTexture, new Vector3f(100, 0, 800), 0, 0, 0, 1f);
     }
 
 }

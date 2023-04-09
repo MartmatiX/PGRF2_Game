@@ -53,7 +53,9 @@ public class GlobalVariables {
 
     public static boolean sunMoveWest = true;
 
-    public static Vector3f sunlight = new Vector3f(0.8f, 0.8f, 0.8f);
-    public static boolean isDay = true;
+    public static Vector3f sunlight = new Vector3f(0, 0, 0);
+
+    public static int enemiesToSpawn = 1;
+    public static float enemySpawnTimer = 30;
 
 }

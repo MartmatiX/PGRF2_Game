@@ -5,6 +5,8 @@ import renderEngine.DisplayManager;
 import javax.swing.*;
 import java.awt.*;
 
+import static game.utils.GlobalVariables.invulnerabilityTimer;
+
 public class GameStatusScreen extends JFrame {
     public static JLabel infoLabel = new JLabel("Game Stats");
     public static JLabel survivedTime = new JLabel();
@@ -14,15 +16,18 @@ public class GameStatusScreen extends JFrame {
     public static JLabel totalScore = new JLabel();
     public static JLabel isVulnerable = new JLabel();
     public static JLabel reloadTime = new JLabel();
+    public static JLabel enemySpawnerLabel = new JLabel();
+    public static JLabel enemiesToSpawn = new JLabel();
 
     public GameStatusScreen() throws HeadlessException {
-        setSize(400, 200);
+        setSize(400, 600);
         super.setTitle("Score");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
         setLocation(1300, 250);
 
         add(panel());
+        pack();
         setVisible(true);
     }
 
@@ -38,6 +43,8 @@ public class GameStatusScreen extends JFrame {
         panel.add(totalScore);
         panel.add(isVulnerable);
         panel.add(reloadTime);
+        panel.add(enemySpawnerLabel);
+        panel.add(enemiesToSpawn);
         panel.add(closeButton());
         return panel;
     }
@@ -48,8 +55,10 @@ public class GameStatusScreen extends JFrame {
         enemyCount.setText("Enemies: " + GlobalVariables.enemies.size());
         kills.setText("Kills: " + GlobalVariables.playerKills);
         totalScore.setText("Total score: " + ((int) GlobalVariables.time + GlobalVariables.playerKills));
-        isVulnerable.setText("Vulnerable: " + convertVulnerable());
+        isVulnerable.setText("Vulnerable: " + invulnerabilityTimer);
         reloadTime.setText("Reloading: " + GlobalVariables.timeBeforeNextShot);
+        enemySpawnerLabel.setText("Time before next wave: " + (int) GlobalVariables.enemySpawnTimer);
+        enemiesToSpawn.setText("Wave strength: " + GlobalVariables.enemiesToSpawn);
     }
 
     private static JButton closeButton() {
@@ -63,11 +72,6 @@ public class GameStatusScreen extends JFrame {
             }
         });
         return button;
-    }
-
-    private static String convertVulnerable() {
-        if (GlobalVariables.isDamageable) return "Yes";
-        else return "No";
     }
 
     public static void invokeGameStatusScreen() {

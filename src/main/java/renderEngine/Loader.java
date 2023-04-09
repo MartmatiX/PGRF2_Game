@@ -83,7 +83,7 @@ public class Loader {
     }
 
     public int loadTexture(String fileName) {
-        Texture texture = null;
+        Texture texture;
         try {
             texture = TextureLoader.getTexture("PNG", new FileInputStream("src/main/resources/" + fileName + ".png"));
         } catch (IOException e) {
@@ -129,7 +129,6 @@ public class Loader {
         return new TextureData(buffer, width, height);
     }
 
-    // Delete from memory
     public void cleanUp() {
         vaos.forEach(GL30::glDeleteVertexArrays);
         vbos.forEach(GL15::glDeleteBuffers);

@@ -5,8 +5,6 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class Camera {
 
-    // TODO: 21.03.2023 create better camera movement
-
     private final float CAMERA_SPEED = -0.05f;
 
     private float distanceFromPlayer = 20;
@@ -17,7 +15,7 @@ public class Camera {
     private float yaw = 0;
     private float roll;
 
-    private Player player;
+    private final Player player;
 
     public Camera(Player player) {
         this.player = player;
@@ -43,7 +41,7 @@ public class Camera {
 
     private void calculateZoom() {
         if (distanceFromPlayer > 60) distanceFromPlayer = 57;
-        if (distanceFromPlayer < 10) distanceFromPlayer = 12; // develop note: change max / min distance from player to something nice
+        if (distanceFromPlayer < 10) distanceFromPlayer = 12;
         float zoomLevel = Mouse.getDWheel() * 0.1f;
         distanceFromPlayer -= zoomLevel;
     }
