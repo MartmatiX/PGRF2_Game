@@ -34,7 +34,6 @@ public class EntityCreator {
         RawModel playerRawModel = OBJLoader.loadObjModel("player", loader);
         TextureModel playerTexture = new TextureModel(playerRawModel, new ModelTexture(loader.loadTexture("player")));
 
-        //entitiesToRender.add(player);
         return new Player(playerTexture, new Vector3f(100, 0, 800), 0, 0, 0, 1f);
     }
 

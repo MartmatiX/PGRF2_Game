@@ -40,10 +40,10 @@ public class Player extends Entity {
 
         float terrainHeight = terrain.getHeightOfTerrain(super.getPosition().x, super.getPosition().z);
 
-        if (super.getPosition().y < terrainHeight + 1.5f) {
+        if (super.getPosition().y < terrainHeight + 0.5f) {
             upwardsSpeed = 0;
             isInAir = false;
-            super.getPosition().y = terrainHeight + 1.5f;
+            super.getPosition().y = terrainHeight + 0.5f;
         }
     }
 
