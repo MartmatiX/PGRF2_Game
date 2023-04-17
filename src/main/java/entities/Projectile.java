@@ -18,7 +18,7 @@ public class Projectile extends Entity {
 
     private final Vector3f direction;
 
-    private float timeToLive = 10;
+    private float timeToLive = 5;
 
     public Projectile(TextureModel model, Vector3f position, Vector3f direction) {
         super(model, position, GlobalVariables.player.getRotX(), GlobalVariables.player.getRotY(), GlobalVariables.player.getRotZ(), 8);
@@ -26,7 +26,7 @@ public class Projectile extends Entity {
     }
 
     public void update() {
-        float speed = 70;
+        float speed = 150;
         float distance = speed * DisplayManager.getFrameTimeSeconds();
         float dx = distance * direction.x;
         float dy = distance * direction.y;

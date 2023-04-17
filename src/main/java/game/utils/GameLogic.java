@@ -109,7 +109,7 @@ public class GameLogic {
                     enemies.remove(i);
                     projectiles.remove(j);
                     playerKills++;
-                    SoundManager.playSound("src/main/resources/bulletHit.wav", 1f, false);
+                    SoundManager.playSound("src/main/resources/sounds/bulletHit.wav", 1f, false);
                     break;
                 }
             }

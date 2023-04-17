@@ -88,6 +88,7 @@ public class Player extends Entity {
         projectilePosition.x += lookDirection.x * 2;
         projectilePosition.y = player.getPosition().getY() + 2;
         projectilePosition.z += lookDirection.z * 2;
+        projectileModel.getTexture().setUseFakeLighting(true);
         Projectile projectile = new Projectile(projectileModel, projectilePosition, lookDirection);
         projectiles.add(projectile);
     }

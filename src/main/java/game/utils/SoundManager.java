@@ -17,7 +17,7 @@ public class SoundManager {
         }
     }
 
-    public static void playSound(String soundFile, float volume, boolean shloudRepeat) {
+    public static void playSound(String soundFile, float volume, boolean shouldRepeat) {
         try {
             FileInputStream fin = new FileInputStream(soundFile);
             BufferedInputStream bin = new BufferedInputStream(fin);
@@ -34,7 +34,7 @@ public class SoundManager {
             AL10.alSourcef(source, AL10.AL_PITCH, 1.0f);
             AL10.alSource3f(source, AL10.AL_POSITION, 0.0f, 0.0f, 0.0f);
             AL10.alSource3f(source, AL10.AL_VELOCITY, 0.0f, 0.0f, 0.0f);
-            if (shloudRepeat) AL10.alSourcei(source, AL10.AL_LOOPING, AL10.AL_TRUE);
+            if (shouldRepeat) AL10.alSourcei(source, AL10.AL_LOOPING, AL10.AL_TRUE);
             AL10.alSourcei(source, AL10.AL_PLAYING, AL10.AL_TRUE);
             AL10.alSourcePlay(source);
         } catch (Exception e) {
