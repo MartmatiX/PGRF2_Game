@@ -65,23 +65,28 @@ public class GameLogic {
                 }
             }
 
-            float dx = player.getPosition().x - enemy.getPosition().x;
-            float dz = player.getPosition().z - enemy.getPosition().z;
+            Vector3f playerPos = player.getPosition();
+            Vector3f enemyPos = enemy.getPosition();
+            float dx = playerPos.x - enemyPos.x;
+            float dz = playerPos.z - enemyPos.z;
             float distance = (float) Math.sqrt(dx * dx + dz * dz);
 
+            float dirX = dx / distance;
+            float dirZ = dz / distance;
+            float rotY = (float) Math.toDegrees(Math.atan2(dirX, dirZ));
+            enemy.setRotY(rotY);
+
             if (distance < safeDistance) {
-                dx /= distance;
-                dz /= distance;
-                enemy.increasePosition(-dx * DisplayManager.getFrameTimeSeconds() * 25, 0, -dz * DisplayManager.getFrameTimeSeconds() * 25);
+                enemy.increasePosition(-dirX * DisplayManager.getFrameTimeSeconds() * 25, 0, -dirZ * DisplayManager.getFrameTimeSeconds() * 25);
             } else {
-                dx /= distance;
-                dz /= distance;
-                enemy.increasePosition(dx * DisplayManager.getFrameTimeSeconds() * 25, 0, dz * DisplayManager.getFrameTimeSeconds() * 25);
+                enemy.increasePosition(dirX * DisplayManager.getFrameTimeSeconds() * 25, 0, dirZ * DisplayManager.getFrameTimeSeconds() * 25);
             }
 
             enemy.moveToPosition(new Vector3f(enemy.getPosition().x, terrains.get(0).getHeightOfTerrain(enemy.getPosition().x, enemy.getPosition().z), enemy.getPosition().z));
         }
     }
+
+
 
     private static void checkShooting() {
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && canShoot) {
