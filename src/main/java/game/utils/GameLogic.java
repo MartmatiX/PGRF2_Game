@@ -48,6 +48,7 @@ public class GameLogic {
 
     private static void moveEnemies() {
         float safeDistance = 5f;
+        float repulsionStrength = 50f;
 
         for (int i = 0; i < enemies.size(); i++) {
             Entity enemy = enemies.get(i);
@@ -60,8 +61,9 @@ public class GameLogic {
                     float dx = enemy.getPosition().x - otherEnemy.getPosition().x;
                     float dz = enemy.getPosition().z - otherEnemy.getPosition().z;
                     float distance = (float) Math.sqrt(dx * dx + dz * dz);
-                    // TODO: 09.04.2023 finish moving enemies from each other on collision
-                    break;
+                    float repulsion = repulsionStrength / (distance * distance);
+                    Vector3f repulsionForce = new Vector3f(dx / distance * repulsion, 0, dz / distance * repulsion);
+                    enemy.increasePosition(repulsionForce.x, 0, repulsionForce.z);
                 }
             }
 
@@ -85,6 +87,7 @@ public class GameLogic {
             enemy.moveToPosition(new Vector3f(enemy.getPosition().x, terrains.get(0).getHeightOfTerrain(enemy.getPosition().x, enemy.getPosition().z), enemy.getPosition().z));
         }
     }
+
 
 
 
